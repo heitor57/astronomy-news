@@ -63,16 +63,26 @@ pic[pos=0.5,sloped,allow upside down] {subsetarc} (\tikztotarget)}}}
 								Subtitulo[attribute],
 				},
 				AUTOR[entity] -- {
-				NomePessoa[as=Nome,attribute], AUTOR_URL[as=URL,key attribute], Descrição[attribute], pPalavras_chave[as=Palavras_chave,attribute], Imagem_perfil[attribute]},
+								Descrição[attribute], pPalavras_chave[as=Palavras_chave,attribute]},
 				PAGINA[entity] -- {
 								PAGINAURL[as=URL,key attribute], Timestamp_obtencao[attribute], Timestamp_processamento[attribute], Seed[attribute]
 				},
 				PORTAL[entity] -- {
 								Logo[attribute], NomePortal[as=Nome,attribute], URL[key attribute],
 				},
+				COMENTARIO[entity] -- {
+								Texto[attribute]
+				},
+				PESSOA[entity] -- {
+								NomePessoa[as=Nome,attribute], AUTOR_URL[as=URL,key attribute], Imagem_perfil[attribute]
+				},
 				PAGINA --[total,edge label=1,pos=0.95] "ESTA_EM"[relationship] --[edge label=N,pos=0.05] PORTAL,
 				PUBLICACAO --[edge label=N,pos=0.95] "ESCRITA POR"[relationship] --[edge label=N,pos=0.05] AUTOR,
 				PAGINA --[supset] PUBLICACAO,
+				AUTOR --[subset] PESSOA,
+				PUBLICACAO --[edge label=N] POSSUI[relationship] --[total,edge label=1] COMENTARIO;
+				COMENTARIO --[edge label=N] "ESCREVE"[relationship] --[edge label=N] AUTOR;
+				COMENTARIO --[out=0,in=90,edge label=1] "RESPONDE"[relationship] --[edge label=N] COMENTARIO;
 };
 
 \end{document}
