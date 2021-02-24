@@ -66,13 +66,13 @@ pic[pos=0.5,sloped,allow upside down] {subsetarc} (\tikztotarget)}}}
 				AUTOR[entity] -- {
 								Descricao[attribute], pPalavras_chave[as=Palavras_chave,multi attribute]},
 				PAGINA[entity] -- {
-								PAGINAURL[as=URL,key attribute], Timestamp_obtencao[attribute], Timestamp_processamento[attribute]
+								PAGINAURL[as=URL,key attribute], Timestamp_obtencao[attribute]
 				},
 				PORTAL[entity] -- {
 								Logo[attribute], NomePortal[as=Nome,attribute], URL[key attribute],
 				},
-				COMENTARIO[weak entity] -- {
-								Texto[attribute]
+				COMENTARIO[entity] -- {
+								ID[key attribute], Texto[attribute]
 				},
 				PESSOA[entity] -- {
 								NomePessoa[as=Nome,attribute], AUTOR_URL[as=URL,key attribute], Imagem_perfil[attribute]
