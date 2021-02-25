@@ -52,40 +52,48 @@ pic[pos=0.5,sloped,allow upside down] {subsetarc} (\tikztotarget)}}}
 }
 
 \tikz[line width=1.1pt,font={\fontsize{9pt}{12}\selectfont}]
-\graph [random seed=10,spring layout,node distance=8.5cm]
+\graph [random seed=10,layered layout,sibling distance=2.5cm,grow'=down]
 {
-				PUBLICACAO[entity] -- {
-								Titulo[attribute], 
-								Tempo_leitura[attribute],
-								Ultima_modificacao[attribute], 
-								Palavras_chave[multi attribute], 
-								Imagem_principal[attribute], 
-								Subtitulo[attribute],
-								pubTexto[as=Texto,attribute],
-								Timestamp_obtencao[attribute],
-								PAGINAURL[as=URL,key attribute], 
+				// [spring layout,node distance=6cm] {
+								PUBLICACAO[entity] -- {
+												Titulo[attribute,regardless at={(3.5,8.7)}], 
+												Tempo_leitura[attribute],
+												Ultima_modificacao[attribute], 
+												Palavras_chave[multi attribute], 
+												Imagem_principal[attribute,regardless at={(3.7,6.3)}], 
+												Subtitulo[attribute,regardless at={(3.5,9.7)}],
+												pubTexto[as=Texto,attribute,regardless at={(-2.5,6.3)}],
+												Timestamp_obtencao[attribute,nudge left=0.7cm],
+												PAGINAURL[as=URL,key attribute,nudge right=1cm], 
+								},
 				},
-				AUTOR[entity] -- {
+				// [layered layout, sibling distance=0.1cm,grow=right] {
+								AUTOR[entity] -- {
 								Descricao[attribute], pPalavras_chave[as=Palavras_chave,multi attribute]},
+				},
 				%PAGINA[entity] -- {
-								%PAGINAURL[as=URL,key attribute], 
+				%PAGINAURL[as=URL,key attribute], 
 				%},
-				PORTAL[entity] -- {
-								Logo[attribute], NomePortal[as=Nome,attribute], URL[key attribute],
+				// [tree layout, sibling distance=0.1cm,grow'=left] {
+								PORTAL[entity] -- {
+												Logo[attribute], NomePortal[as=Nome,attribute], URL[key attribute],
+								},
 				},
-				COMENTARIO[entity] -- {
-								ID[key attribute], Texto[attribute]
+				COMENTARIO[entity,regardless at={(0.5,-3.2)}] -- {
+								ID[key attribute], Texto[attribute,nudge right=1.1cm]
 				},
-				PESSOA[entity] -- {
-								NomePessoa[as=Nome,attribute], AUTOR_URL[as=URL,key attribute], Imagem_perfil[attribute]
+				// [node distance=0.2cm] {
+								PESSOA[entity] -- {
+												NomePessoa[as=Nome,attribute], AUTOR_URL[as=URL,key attribute], Imagem_perfil[attribute]
+								},
 				},
-				PUBLICACAO --[total,edge label=1,pos=0.95] "ESTA_EM"[relationship] --[edge label=N,pos=0.05] PORTAL,
-				PUBLICACAO --[edge label=N,pos=0.95] "ESCRITA_POR"[relationship] --[edge label=N,pos=0.05] AUTOR,
+				PUBLICACAO --[total,edge label=1,pos=0.95] "ESTA_EM"[relationship] --[edge label=N,pos=0.25] PORTAL,
+				PUBLICACAO --[edge label=N,pos=0.95] "ESCRITA_POR"[relationship] --[edge label=N,pos=0.15] AUTOR,
 				%PAGINA --[supset] PUBLICACAO,
 				AUTOR --[subset] PESSOA,
-				PUBLICACAO --[edge label=N] POSSUI[relationship] --[total,edge label=1] COMENTARIO;
-				COMENTARIO --[edge label=1,total] "ESCREVE"[relationship] --[edge label=N] PESSOA;
-				COMENTARIO --[out=0,in=0,edge label=1] "RESPONDE"[relationship] --[edge label=N] COMENTARIO;
+				PUBLICACAO --[edge label=N,pos=0.95] POSSUI[relationship] --[total,edge label=1,pos=0.05] COMENTARIO;
+				COMENTARIO --[edge label=1,total,pos=0.75] "ESCREVE"[relationship,nudge left=0.3cm] --[edge label=N,pos=0.25] PESSOA;
+				COMENTARIO --[out=-130,in=125,edge label=1,pos=0.75] "RESPONDE"[relationship,regardless at={(0.5,-5.7)}] --[edge label=N,out=65,in=-40,pos=0.25] COMENTARIO;
 };
 
 \end{document}
