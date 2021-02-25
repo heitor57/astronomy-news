@@ -1,0 +1,41 @@
+\documentclass{standalone}
+\usepackage{multirow}
+\usepackage{amssymb}
+\usepackage{tabulary}
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+\newcolumntype{K}[1]{>{\centering\arraybackslash}p{#1}}
+\begin{document}
+\begin{tabular}{|c|c|K{1.9cm}|K{1.9cm}|c|c|K{1.9cm}|c|K{1.9cm}|}
+				\hline
+				Domínio         & Imagem & Legenda (Imagem) & Seções & Vídeo  & Twitter & Carrosel de imagens & Citação & Player de Aúdio\\\hline
+				TecMundo        & \xmark & \xmark           & \xmark & \xmark &         &                     &         & \\\hline
+				BBC             & \xmark & \xmark           & \xmark & \xmark &         &                     &         & \\\hline
+				UOL             & \xmark & \xmark           & \xmark & \xmark & \xmark  &                     &         & \\\hline
+				R7              &        & \xmark           & \xmark & \xmark &         & \xmark              &         & \\\hline
+				Veja            & \xmark & \xmark           &        &        &         &                     &         & \\\hline
+				IG              & \xmark & \xmark           & \xmark &        &         &                     &         & \\\hline
+				Terra           & \xmark & \xmark           & \xmark &        & \xmark  &                     &         & \\\hline
+				Jornal USP      & \xmark & \xmark           & \xmark & \xmark &         &                     & \xmark  & \xmark\\\hline
+				Revista Galileu & \xmark & \xmark           & \xmark & \xmark &         &                     &         & \\\hline
+				Exame           & \xmark & \xmark           & \xmark & \xmark & \xmark  &                     & \xmark  & \\\hline
+				CanalTech       & \xmark & \xmark           & \xmark & \xmark & \xmark  &                     &         & \\\hline
+\end{tabular}
+
+\begin{tabular}{|c|c|c|K{1.4cm}|c|K{1.6cm}|c|c|K{1.9cm}|c|c|K{1.4cm}|K{0.95cm}|}
+				\hline
+				Domínio         & Título & Descrição & Imagem principal & Data & Tempo de Leitura & Conteúdo & Comentários & Tipo Comentário & Reações(C) & Tags  & Nome do Autor & URL Autor\\\hline
+				TecMundo        & \xmark   & \xmark      & \xmark             & \xmark & \xmark             & \xmark     & \xmark        & Disqus          & \xmark       & \xmark  & \xmark          & \xmark\\\hline
+				BBC             & \xmark   & \xmark      & \xmark             & \xmark &             & \xmark     &        & Nenhum          &       & \xmark  & \xmark          & \\\hline
+				UOL             & \xmark   & \xmark      & \xmark             & \xmark &             & \xmark     & \xmark        & Próprio         &       & \xmark  & \xmark          & \\\hline
+				R7              & \xmark   & \xmark      & \xmark             & \xmark &             & \xmark     &        & Nenhum          &       & \xmark  & \xmark          & \\\hline
+				Veja            & \xmark   & \xmark      & \xmark             & \xmark &             & \xmark     &        & Nenhum          &       & \xmark  & \xmark          & \\\hline
+				IG              & \xmark   & \xmark      & \xmark             & \xmark &             & \xmark     & \xmark        & Facebook        &       & \xmark  & \xmark          & \xmark\\\hline
+				Terra           & \xmark   & \xmark      & \xmark             & \xmark &             & \xmark     & \xmark        & Facebook        &       &  & \xmark          & \\\hline
+				Jornal USP      & \xmark   & \xmark      & \xmark             & \xmark &             & \xmark     &        & Nenhum          &       &  & \xmark          & \xmark\\\hline
+				Revista Galileu & \xmark   & \xmark      & \xmark             & \xmark & \xmark             & \xmark     &        & Nenhum          &       & \xmark  & \xmark          & \\\hline
+				Exame           & \xmark   & \xmark      & \xmark             & \xmark & \xmark             & \xmark     &        & Nenhum          &       & \xmark  & \xmark          & \xmark\\\hline
+				CanalTech       & \xmark   & \xmark      & \xmark             & \xmark &             & \xmark     & \xmark        & Disqus          & \xmark       &  & \xmark          & \xmark\\\hline
+\end{tabular}
+\end{document}
