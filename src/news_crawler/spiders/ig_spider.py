@@ -16,6 +16,12 @@ function main(splash)
         assert(splash:go(splash.args.url))
         splash:wait(splash.args.wait)
 
+        local scroll_comentarios = splash:jsfunc([[
+        function() {document.getElementById('comentarios').scrollIntoView();}
+        ]])
+        scroll_comentarios();
+        splash:wait(5)
+
         for _ = 1, num_scrolls do
             local height = get_body_height()
             for i = 1, 10 do
@@ -23,11 +29,6 @@ function main(splash)
                 splash:wait(scroll_delay/10)
             end
         end        
-        local scroll_comentarios = splash:jsfunc([[
-        function() {document.getElementById('comentarios').scrollIntoView();}
-        ]])
-        scroll_comentarios();
-        splash:wait(1)
 
         return splash:html()
 end
@@ -85,7 +86,7 @@ class IGSpider(scrapy.Spider):
             # if target_url == 'https://ultimosegundo.ig.com.br/colunas/astronoticias/2019-10-25/estrelas-binarias-em-uma-rosquinha-cosmica.html':
             yield SplashRequest(target_url, self.parse_target, 
                     endpoint='execute', 
-                    args={'wait': 10.0,'lua_source':script})
+                    args={'wait': 0.2,'lua_source':script})
 
         # self.log(urls)
         if len(urls) > 0:
