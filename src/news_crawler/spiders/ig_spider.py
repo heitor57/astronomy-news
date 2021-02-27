@@ -3,23 +3,33 @@ import time
 from bs4 import BeautifulSoup
 import re
 from scrapy_splash import SplashRequest 
+from scrapy.utils.response import open_in_browser
 script = """
 function main(splash)
-    local num_scrolls = 10
-    local scroll_delay = 1.0
+        local num_scrolls = 10
+        local scroll_delay = 1
 
-    local scroll_to = splash:jsfunc("window.scrollTo")
-    local get_body_height = splash:jsfunc(
-        "function() {return document.body.scrollHeight;}"
-    )
-    assert(splash:go(splash.args.url))
-    splash:wait(splash.args.wait)
+        local scroll_to = splash:jsfunc("window.scrollTo")
+        local get_body_height = splash:jsfunc(
+            "function() {return document.body.scrollHeight;}"
+        )
+        assert(splash:go(splash.args.url))
+        splash:wait(splash.args.wait)
 
-    for _ = 1, num_scrolls do
-        scroll_to(0, get_body_height())
-        splash:wait(scroll_delay)
-    end        
-    return splash:html()
+        for _ = 1, num_scrolls do
+            local height = get_body_height()
+            for i = 1, 10 do
+                scroll_to(0, height * i/10)
+                splash:wait(scroll_delay/10)
+            end
+        end        
+        local scroll_comentarios = splash:jsfunc([[
+        function() {document.getElementById('comentarios').scrollIntoView();}
+        ]])
+        scroll_comentarios();
+        splash:wait(1)
+
+        return splash:html()
 end
 """
 
@@ -37,6 +47,10 @@ class IGSpider(scrapy.Spider):
 
 
     def parse_target(self,response):
+
+        # from scrapy.http.response.html import HtmlResponse
+        # ht = HtmlResponse(url=response.url, body=response.body, encoding="utf-8", request=response.request)
+        # open_in_browser(ht)
         html = response.text
         soup = BeautifulSoup(html, 'html.parser')
         title = soup.find("h1", id="noticia-titulo-h1").string
@@ -49,7 +63,7 @@ class IGSpider(scrapy.Spider):
         #image = soup.find("div", class_="image").get('src')
         
         texts = soup.find("div", id="noticia").find_all("p")
-        comments = soup.find("div",class_="_2pi8")
+        comments = soup.find("div",id="comentarios").find_all("span",class_="_5mdd")
         content= ""
         for i in texts :
             if i.string != None:    
@@ -68,6 +82,7 @@ class IGSpider(scrapy.Spider):
         target_urls = response.xpath("//a[contains(@class, 'empilhaDesc')]/@href").getall()
 
         for target_url in target_urls:
+            # if target_url == 'https://ultimosegundo.ig.com.br/colunas/astronoticias/2019-10-25/estrelas-binarias-em-uma-rosquinha-cosmica.html':
             yield SplashRequest(target_url, self.parse_target, 
                     endpoint='execute', 
                     args={'wait': 10.0,'lua_source':script})
