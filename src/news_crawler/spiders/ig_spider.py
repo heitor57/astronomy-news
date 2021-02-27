@@ -49,6 +49,7 @@ class IGSpider(scrapy.Spider):
         #image = soup.find("div", class_="image").get('src')
         
         texts = soup.find("div", id="noticia").find_all("p")
+        comments = soup.find("div",class_="_2pi8")
         content= ""
         for i in texts :
             if i.string != None:    
@@ -56,7 +57,7 @@ class IGSpider(scrapy.Spider):
                 content += "\n"
         tags = None
 
-        yield {'title':title,'subtitle':subtitle,'autor':autor,'date':date,'text':content}
+        yield {'title':title,'subtitle':subtitle,'autor':autor,'date':date,'text':content,'comments':comments}
         
     def parse(self, response):
         urls = response.xpath('//a/@href').getall()
@@ -68,7 +69,7 @@ class IGSpider(scrapy.Spider):
 
         for target_url in target_urls:
             yield SplashRequest(target_url, self.parse_target, 
-                    endpoint='render.html', 
+                    endpoint='execute', 
                     args={'wait': 10.0,'lua_source':script})
 
         # self.log(urls)
