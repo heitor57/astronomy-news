@@ -1,0 +1,43 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usetikzlibrary{shapes}
+\usepackage[T1]{fontenc}
+
+\usetikzlibrary {arrows.meta,graphs,graphdrawing}
+\usegdlibrary {layered}
+\usetikzlibrary {graphs,graphdrawing,quotes} \usegdlibrary {force}
+\usetikzlibrary {graphs,graphdrawing} \usegdlibrary {trees}
+\usetikzlibrary{arrows, decorations.markings}
+\usetikzlibrary{arrows}
+\usetikzlibrary{shapes}
+\usetikzlibrary{er}
+\usetikzlibrary{quotes}
+\usetikzlibrary{positioning}
+\tikzstyle{vecArrow} = [thick, decoration={markings,mark=at position
+   1 with {\arrow[semithick]{open triangle 60}}},
+   double distance=1.4pt, shorten >= 5.5pt,
+   preaction = {decorate},
+   postaction = {draw,line width=1.4pt, white,shorten >= 4.5pt}]
+\begin{document}
+
+\begin{tikzpicture}[every node/.style={text width=2cm,align=center},comp/.style={draw,circle},node distance=5.5cm]
+				\node[draw, rectangle] (1) {Usuário interno};
+				\node[comp, below of= 1, yshift=2.5cm] (2) {Carrega a página da URL};
+				\node[comp, below left of= 2] (3) {Extrai Links};
+				\node[comp, below right of= 2] (4) {HTML Parser};
+				\node[comp, below of= 2] (5) {URL List};
+				\draw [vecArrow] (1) -- node[xshift=0.9cm] {URL Seed} (2);
+				\draw [vecArrow] (2) -|node[xshift=0.5cm,yshift=0.7cm,] {Página de navegação baixada} (3);
+				\draw [vecArrow] (3) --node[xshift=0.4cm,yshift=-0.4cm,] {Links} (2);
+				\draw [vecArrow] (2) -| node[xshift=-0.5cm,yshift=0.7cm] {Página de publicação baixada} (4);
+				\draw [vecArrow] (4) -- node[xshift=-0.4cm,yshift=-0.4cm,] {Dados estruturados} (2);
+				\draw [vecArrow] (2) --node[xshift=0.6cm,yshift=-0.8cm] {URL} (5);
+\end{tikzpicture}
+
+%\tikz[line width=1.1pt,font={\fontsize{9pt}{12}\selectfont},every node/.style={draw,circle,text width=2cm,align=center},every edge/.style={latex-}]
+%\graph [random seed=10,layered layout,sibling distance=2.5cm,grow'=down,]
+%{
+				%"Usuário interno" ->[edge label=Seed URL] {"Carrega a página da URL" -> {"Extrai Links", "Lista de URLs", "HTML Parser"} },
+				%{"Extrai Links", "Lista de URLs", "HTML Parser"} -> "Carrega a página da URL"
+%};
+\end{document}
