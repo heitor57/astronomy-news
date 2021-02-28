@@ -19,17 +19,17 @@ NEWSPIDER_MODULE = 'news_crawler.spiders'
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
 
-DOWNLOADER_MIDDLEWARES = { 
-    'scrapy_splash.SplashCookiesMiddleware': 723, 
-    'scrapy_splash.SplashMiddleware': 725, 
-    'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 810, 
+from shutil import which
+
+SELENIUM_DRIVER_NAME = 'firefox'
+SELENIUM_DRIVER_EXECUTABLE_PATH = which('geckodriver')
+# SELENIUM_DRIVER_ARGUMENTS=['-headless',"-width=1920","-height=1080",'-disable-web-security']  # '--headless' if using chrome instead of firefox
+SELENIUM_DRIVER_ARGUMENTS=[]  # '--headless' if using chrome instead of firefox
+# SELENIUM_DRIVER_ARGUMENTS=['--headless']  # '--headless' if using chrome instead of firefox
+DOWNLOADER_MIDDLEWARES = {
+    'scrapy_selenium.SeleniumMiddleware': 800
 }
-SPLASH_URL = 'http://localhost:8050/'
-SPIDER_MIDDLEWARES = { 
-    'scrapy_splash.SplashDeduplicateArgsMiddleware': 100, 
-}
-DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter' 
-HTTPCACHE_STORAGE = 'scrapy_splash.SplashAwareFSCacheStorage'
+
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
 
