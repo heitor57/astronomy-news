@@ -11,6 +11,7 @@ import selenium
 
 import urllib
 from selenium import webdriver
+from .facebook import facebook_process
 center_script = """
 document.getElementById('social-comments').scrollIntoView({
             behavior: 'auto',
@@ -105,27 +106,10 @@ class TerraSpider(scrapy.Spider):
 
         comments = tree.xpath("//div[@class='_2pi8']//span[@class='_5mdd']")
         driver.switch_to.frame(driver.find_element_by_css_selector("#social-comments iframe"))
+        facebook_process(driver)
         comments = lxml.html.fromstring(driver.page_source)
 
         comments = comments.xpath("*[@class='_3-8y _5nz1 clearfix']//*[class='_5mdd']")
-        time.sleep(5)
-        try:
-            element = driver.find_element_by_xpath("//button[@class='_1gl3 _4jy0 _4jy3 _517h _51sy _42ft']")
-            while element:
-                element.click()
-                time.sleep(2)
-                element = driver.find_element_by_xpath("//button[@class='_1gl3 _4jy0 _4jy3 _517h _51sy _42ft']")
-        except selenium.common.exceptions.NoSuchElementException as e:
-            pass
-
-        try:
-            element = driver.find_element_by_xpath("//div[@class='_5yct _3-8y _3-96 _2ph-']//a")
-            while element:
-                element.click()
-                time.sleep(2)
-                element = driver.find_element_by_xpath("//div[@class='_5yct _3-8y _3-96 _2ph-']//a")
-        except selenium.common.exceptions.NoSuchElementException as e:
-            pass
 
         yield {
             'title': title,

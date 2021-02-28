@@ -1,9 +1,17 @@
 import scrapy 
+import selenium
 import time
 from bs4 import BeautifulSoup
 import re
 from scrapy_splash import SplashRequest 
 from scrapy.utils.response import open_in_browser
+from scrapy_selenium import SeleniumRequest
+import lxml
+import urllib
+import selenium
+from .facebook import facebook_process
+
+
 script = """
 function main(splash)
         local num_scrolls = 10
@@ -15,12 +23,6 @@ function main(splash)
         )
         assert(splash:go(splash.args.url))
         splash:wait(splash.args.wait)
-
-        local scroll_comentarios = splash:jsfunc([[
-        function() {document.getElementById('comentarios').scrollIntoView();}
-        ]])
-        scroll_comentarios();
-        splash:wait(5)
 
         for _ = 1, num_scrolls do
             local height = get_body_height()
@@ -37,21 +39,24 @@ end
 class IGSpider(scrapy.Spider):
     name = "ig"
     allowed_domains=['ultimosegundo.ig.com.br']
-    start_urls =['https://ultimosegundo.ig.com.br/colunas/astronoticias/']
+    # start_urls =['https://ultimosegundo.ig.com.br/colunas/astronoticias/']
+    start_urls =['https://ultimosegundo.ig.com.br/colunas/astronoticias/2019-10-25/estrelas-binarias-em-uma-rosquinha-cosmica.html']
 
     def start_requests(self): 
         for url in self.start_urls: 
-            yield SplashRequest(url, self.parse, 
-                endpoint='render.html', 
-                args={'wait': 10.0}, 
-           ) 
+            # yield SeleniumRequest(url=url, callback=self.parse)
+            yield SeleniumRequest(url=url, callback=self.parse_target)
 
 
     def parse_target(self,response):
+        driver = response.request.meta['driver']
+        time.sleep(10)
+        comments_element = driver.find_element_by_xpath("//h4[contains(text(), 'Comentários')]")
+        for _ in range(5):
+            driver.execute_script("arguments[0].scrollIntoView()",comments_element)
+            time.sleep(5)
 
-        # from scrapy.http.response.html import HtmlResponse
-        # ht = HtmlResponse(url=response.url, body=response.body, encoding="utf-8", request=response.request)
-        # open_in_browser(ht)
+
         html = response.text
         soup = BeautifulSoup(html, 'html.parser')
         title = soup.find("h1", id="noticia-titulo-h1").string
@@ -59,12 +64,21 @@ class IGSpider(scrapy.Spider):
         autor = soup.find("strong", class_="complemento-credito").string
         autorlink = None
         readtime = None
+        comments = None
         image = None
         date = soup.find("time", itemprop="datePublished").string
         #image = soup.find("div", class_="image").get('src')
         
         texts = soup.find("div", id="noticia").find_all("p")
-        comments = soup.find("div",id="comentarios").find_all("span",class_="_5mdd")
+
+        driver.switch_to.frame(driver.find_element_by_css_selector(".fb-commets-content iframe"))
+        facebook_process(driver)
+
+        comments = driver.page_source
+        # comments = lxml.html.fromstring(driver.page_source)
+
+        # comments = comments.xpath("*[@class='_3-8y _5nz1 clearfix']//*[class='_5mdd']")
+        # comments = soup.find("div",id="comentarios").find_all("span",class_="_5mdd")
         content= ""
         for i in texts :
             if i.string != None:    
@@ -75,23 +89,20 @@ class IGSpider(scrapy.Spider):
         yield {'title':title,'subtitle':subtitle,'autor':autor,'date':date,'text':content,'comments':comments}
         
     def parse(self, response):
-        urls = response.xpath('//a/@href').getall()
+        driver = response.request.meta['driver']
+        time.sleep(3)
+        tree = lxml.html.fromstring(driver.page_source)
+        urls = tree.xpath('//a/@href')
 
         pattern = re.compile(r'\?p=[0-9]+')
 
         urls = [i for i in urls if pattern.match(i)]
-        target_urls = response.xpath("//a[contains(@class, 'empilhaDesc')]/@href").getall()
+        target_urls = tree.xpath("//a[contains(@class, 'empilhaDesc')]/@href")
 
         for target_url in target_urls:
-            # if target_url == 'https://ultimosegundo.ig.com.br/colunas/astronoticias/2019-10-25/estrelas-binarias-em-uma-rosquinha-cosmica.html':
-            yield SplashRequest(target_url, self.parse_target, 
-                    endpoint='execute', 
-                    args={'wait': 0.2,'lua_source':script})
+            yield SeleniumRequest(url=target_url, callback=self.parse_target)
 
-        # self.log(urls)
         if len(urls) > 0:
             for url in urls:
                 url = response.urljoin(url)
-                yield SplashRequest(url, self.parse, 
-                    endpoint='render.html', 
-                    args={'wait': 10.0})
+                yield SeleniumRequest(url=url, callback=self.parse)
