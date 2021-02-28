@@ -1,4 +1,5 @@
 import scrapy 
+from selenium.webdriver.support import expected_conditions as EC
 import selenium
 import time
 from bs4 import BeautifulSoup
@@ -6,6 +7,9 @@ import re
 from scrapy_splash import SplashRequest 
 from scrapy.utils.response import open_in_browser
 from scrapy_selenium import SeleniumRequest
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
 import lxml
 import urllib
 import selenium
@@ -50,11 +54,16 @@ class IGSpider(scrapy.Spider):
 
     def parse_target(self,response):
         driver = response.request.meta['driver']
-        time.sleep(10)
+        time.sleep(6)
         comments_element = driver.find_element_by_xpath("//h4[contains(text(), 'Comentários')]")
-        for _ in range(5):
+        for _ in range(7):
             driver.execute_script("arguments[0].scrollIntoView()",comments_element)
-            time.sleep(5)
+            time.sleep(1)
+        # facebook
+        driver.switch_to.frame(driver.find_element_by_css_selector(".fb-commets-content iframe"))
+        WebDriverWait(driver,20).until(EC.presence_of_element_located((By.ID, 'facebook')))
+
+        driver.switch_to.default_content()
 
 
         html = response.text
@@ -75,6 +84,10 @@ class IGSpider(scrapy.Spider):
         facebook_process(driver)
 
         comments = driver.page_source
+
+        from scrapy.http.response.html import HtmlResponse
+        ht = HtmlResponse(url=response.url, body=driver.page_source, encoding="utf-8", request=response.request)
+        open_in_browser(ht)
         # comments = lxml.html.fromstring(driver.page_source)
 
         # comments = comments.xpath("*[@class='_3-8y _5nz1 clearfix']//*[class='_5mdd']")
