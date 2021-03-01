@@ -1,5 +1,6 @@
 import scrapy 
 from selenium.webdriver.support import expected_conditions as EC
+from ..items import Publication
 import selenium
 import json
 import time
@@ -77,8 +78,8 @@ class IGSpider(scrapy.Spider):
         soup = BeautifulSoup(html, 'html.parser')
         title = soup.find("h1", id="noticia-titulo-h1").string
         subtitle = soup.find("h2", id="noticia-olho").string
-        autor = soup.find("strong", class_="complemento-credito").string
-        autorlink = None
+        author = soup.find("strong", class_="complemento-credito").string
+        authorlink = None
         readtime = None
         comments = None
         image = None
@@ -97,9 +98,9 @@ class IGSpider(scrapy.Spider):
         # open_in_browser(ht)
         self.log("Started Scanning comments")
         # self.expr.scanString(driver.page_source)
-        string = originalTextFor(self.expr).searchString(driver.page_source).asList()[0]
+        string = originalTextFor(self.expr).searchString(driver.page_source).asList()
         if len(string)>0:
-            string = string[0]
+            string = string[0][0]
             comments_json = json.loads("{"+string+"}")["comments"]
             self.log("Finished Scanning comments")
             # comments_ids = set(comments_json['commentsIDs'])
@@ -129,7 +130,7 @@ class IGSpider(scrapy.Spider):
                     # objects.append(i)
             
             comments = json.dumps(comments_json,indent=2)
-            print(comments)
+            # print(comments)
 
         # print(string)
         # comments = lxml.html.fromstring(driver.page_source)
@@ -143,7 +144,8 @@ class IGSpider(scrapy.Spider):
                 content += "\n"
         tags = None
 
-        yield {'title':title,'subtitle':subtitle,'autor':autor,'date':date,'text':content,'comments':comments}
+        yield Publication(title=title,subtitle=subtitle,author=authorlink,text=content)
+        # yield {'title':title,'subtitle':subtitle,'author':author,'date':date,'text':content,'comments':comments}
         
     def parse(self, response):
         driver = response.request.meta['driver']
