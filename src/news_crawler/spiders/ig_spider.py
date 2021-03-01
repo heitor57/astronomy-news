@@ -1,6 +1,7 @@
 import scrapy 
 from selenium.webdriver.support import expected_conditions as EC
 import selenium
+import json
 import time
 from bs4 import BeautifulSoup
 import re
@@ -14,6 +15,8 @@ import lxml
 import urllib
 import selenium
 from .facebook import facebook_process
+
+from pyparsing import *
 
 
 script = """
@@ -48,6 +51,7 @@ class IGSpider(scrapy.Spider):
     start_urls =['https://ultimosegundo.ig.com.br/colunas/astronoticias/2019-07-02/eclipse-solar-2019.html']
 
     def start_requests(self): 
+        self.expr = Literal('"comments"')+Literal(':')+nestedExpr('{','}')
         for url in self.start_urls: 
             # yield SeleniumRequest(url=url, callback=self.parse)
             yield SeleniumRequest(url=url, callback=self.parse_target)
@@ -61,8 +65,10 @@ class IGSpider(scrapy.Spider):
             driver.execute_script("arguments[0].scrollIntoView()",comments_element)
             time.sleep(1)
         # facebook
+        WebDriverWait(driver,20).until(EC.presence_of_element_located((By.CSS_SELECTOR, ".fb-commets-content iframe")))
         driver.switch_to.frame(driver.find_element_by_css_selector(".fb-commets-content iframe"))
         WebDriverWait(driver,20).until(EC.presence_of_element_located((By.ID, 'facebook')))
+        # WebDriverWait(driver,20).until(EC.presence_of_element_located((By.ID, 'facebook')))
 
         driver.switch_to.default_content()
 
@@ -89,6 +95,13 @@ class IGSpider(scrapy.Spider):
         from scrapy.http.response.html import HtmlResponse
         ht = HtmlResponse(url=response.url, body=driver.page_source, encoding="utf-8", request=response.request)
         open_in_browser(ht)
+        self.log("Started Scanning comments")
+        # self.expr.scanString(driver.page_source)
+        string = originalTextFor(self.expr).searchString(driver.page_source).asList()[0][0]
+        print(string)
+        comments_json = json.loads("{"+string+"}")["comments"]
+        self.log("Finished Scanning comments")
+        comments = json.dumps(comments_json,indent=2)
         # comments = lxml.html.fromstring(driver.page_source)
 
         # comments = comments.xpath("*[@class='_3-8y _5nz1 clearfix']//*[class='_5mdd']")
