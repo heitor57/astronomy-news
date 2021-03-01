@@ -9,7 +9,8 @@ import re
 from scrapy_splash import SplashRequest 
 from scrapy.utils.response import open_in_browser
 from scrapy_selenium import SeleniumRequest
-from selenium.webdriver.support import expected_conditions as EC
+from selenium import webdriver
+from scrapy.http import Request
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 import lxml
@@ -47,19 +48,24 @@ end
 class IGSpider(scrapy.Spider):
     name = "ig"
     allowed_domains=['ultimosegundo.ig.com.br']
-    # start_urls =['https://ultimosegundo.ig.com.br/colunas/astronoticias/']
+    start_urls =['https://ultimosegundo.ig.com.br/colunas/astronoticias/']
     # start_urls =['https://ultimosegundo.ig.com.br/colunas/astronoticias/2019-10-25/estrelas-binarias-em-uma-rosquinha-cosmica.html']
-    start_urls =['https://ultimosegundo.ig.com.br/colunas/astronoticias/2019-07-02/eclipse-solar-2019.html']
+    # start_urls =['https://ultimosegundo.ig.com.br/colunas/astronoticias/2019-07-02/eclipse-solar-2019.html']
 
     def start_requests(self): 
+        from selenium.webdriver.firefox.options import Options
+        self.opts = Options()
+        # self.opts.set_headless()
         self.expr = Literal('"comments"')+Literal(':')+nestedExpr('{','}')
         for url in self.start_urls: 
             # yield SeleniumRequest(url=url, callback=self.parse)
-            yield SeleniumRequest(url=url, callback=self.parse_target)
+            yield Request(url=url, callback=self.parse)
 
 
     def parse_target(self,response):
-        driver = response.request.meta['driver']
+        driver = webdriver.Firefox(options=self.opts)
+        driver.get(response.url)
+        # driver = response.request.meta['driver']
         time.sleep(6)
         comments_element = driver.find_element_by_xpath("//h4[contains(text(), 'Comentários')]")
         for _ in range(7):
@@ -160,11 +166,15 @@ class IGSpider(scrapy.Spider):
                 content += "\n"
         tags = None
 
+        driver.close()
+
         yield Publication(title=title,subtitle=subtitle,author=authorlink,text=content,comments=comments)
         # yield {'title':title,'subtitle':subtitle,'author':author,'date':date,'text':content,'comments':comments}
         
     def parse(self, response):
-        driver = response.request.meta['driver']
+        driver = webdriver.Firefox(options=self.opts)
+        driver.get(response.url)
+        # driver = response.request.meta['driver']
         time.sleep(3)
         tree = lxml.html.fromstring(driver.page_source)
         urls = tree.xpath('//a/@href')
@@ -175,10 +185,11 @@ class IGSpider(scrapy.Spider):
         target_urls = tree.xpath("//a[contains(@class, 'empilhaDesc')]/@href")
 
         for target_url in target_urls:
-            yield SeleniumRequest(url=target_url, callback=self.parse_target)
+            yield Request(url=target_url, callback=self.parse_target)
 
 
         if len(urls) > 0:
             for url in urls:
                 url = response.urljoin(url)
-                yield SeleniumRequest(url=url, callback=self.parse)
+                yield Request(url=url, callback=self.parse)
+        driver.close()

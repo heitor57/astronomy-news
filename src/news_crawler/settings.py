@@ -23,12 +23,15 @@ from shutil import which
 
 SELENIUM_DRIVER_NAME = 'firefox'
 SELENIUM_DRIVER_EXECUTABLE_PATH = which('geckodriver')
-SELENIUM_DRIVER_ARGUMENTS=['-headless',"-width=1920","-height=1080",'-disable-web-security']  # '--headless' if using chrome instead of firefox
+# SELENIUM_DRIVER_ARGUMENTS=['-headless',"-width=1920","-height=1080",'-disable-web-security']  # '--headless' if using chrome instead of firefox
 # SELENIUM_DRIVER_ARGUMENTS=['-headless']  # '--headless' if using chrome instead of firefox
+SELENIUM_DRIVER_ARGUMENTS=[]  # '--headless' if using chrome instead of firefox
 # SELENIUM_DRIVER_ARGUMENTS=['--headless']  # '--headless' if using chrome instead of firefox
-DOWNLOADER_MIDDLEWARES = {
-    'scrapy_selenium.SeleniumMiddleware': 800
-}
+# CONCURRENT_REQUESTS = 1
+# CONCURRENT_REQUESTS_PER_DOMAIN=1
+# DOWNLOADER_MIDDLEWARES = {
+    # 'scrapy_selenium.SeleniumMiddleware': 800
+# }
 ITEM_PIPELINES = {
     'news_crawler.pipelines.NewsCrawlerPipeline': 800,
 }
@@ -40,7 +43,7 @@ MONGO_URI = "mongodb://172.17.0.2:27017/"
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 1
+DOWNLOAD_DELAY = 20
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
