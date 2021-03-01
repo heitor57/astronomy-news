@@ -116,7 +116,10 @@ class IGSpider(scrapy.Spider):
                     og_object_id = v['id']
 
                 if v['type'] == 'user' or v['type'] == 'ogobject':
-                    id_url[v['id']] = v['uri']
+                    if v['uri'] == '':
+                        id_url[v['id']] = v['thumbSrc']
+                    else:
+                        id_url[v['id']] = v['uri']
                 if v['type'] == 'user':
                     yield Person(url=v['uri'],
                             name=v['name'],
@@ -125,6 +128,7 @@ class IGSpider(scrapy.Spider):
             def extract_comments(comment):
                 extracted_comment = {
                         'author': id_url[comment['authorID']],
+                        # 'name': comment['name'],
                         # 'target': id_url[comment['targetID']],
                         'text': comment['body']['text'],
                         'timestamp': comment['timestamp']['time'],

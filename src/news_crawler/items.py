@@ -28,8 +28,6 @@ class Person(scrapy.Item):
     profile_image = scrapy.Field()
     url = scrapy.Field()
     name = scrapy.Field()
-
-class Author(Person):
     key_words = scrapy.Field()
     description = scrapy.Field()
 
