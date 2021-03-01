@@ -161,8 +161,10 @@ class IGSpider(scrapy.Spider):
         # comments = soup.find("div",id="comentarios").find_all("span",class_="_5mdd")
         content= ""
         for i in texts :
-            if i.string != None:    
+            if i.string != None: 
+                content += "<p>"   
                 content += i.text
+                content += "</p>"
                 content += "\n"
         tags = None
 
