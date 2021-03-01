@@ -29,6 +29,10 @@ SELENIUM_DRIVER_ARGUMENTS=['-headless',"-width=1920","-height=1080",'-disable-we
 DOWNLOADER_MIDDLEWARES = {
     'scrapy_selenium.SeleniumMiddleware': 800
 }
+ITEM_PIPELINES = {
+    'news_crawler.pipelines.NewsCrawlerPipeline': 800,
+}
+MONGO_URI = "mongodb://172.17.0.2:27017/"
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
