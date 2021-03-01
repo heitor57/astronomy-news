@@ -23,7 +23,7 @@ class Publication(scrapy.Item):
     url = scrapy.Field()
     key_words = scrapy.Field()
 
-class Pessoa(scrapy.Item):
+class Person(scrapy.Item):
     profile_image = scrapy.Field()
     url = scrapy.Field()
     name = scrapy.Field()
