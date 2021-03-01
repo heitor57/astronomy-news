@@ -1,0 +1,157 @@
+\section{Modelo Conceitual Banco De Dados}
+
+Para modelar conceitualmente o Banco de Dados foi utilizado o Modelo Entidade-Relacionamento Estendido (Modelo EER). A princípio foram definidos alguns elementos do tipo entidade e do tipo relacionamento que seriam essenciais para a estrutura do Banco de Dados, como por exemplo:
+
+\begin{itemize}
+				\item Tipo Entidade: Portal, Publicação, Pessoa, Autor, Comentário; 
+
+				\item  Tipo Relacionamento: Publicação ESTA\_EM Portal, Publicação ESCRITA\_POR Autor, Pessoa ESCREVE Comentário;
+\end{itemize}
+
+Através da análise detalhada do minimundo, e refinamentos no modelo pré-estabelecido, obteve-se o modelo mostrado na Figura 1.
+
+
+\subsection{Tipos Entidades}
+
+Os Tipos Entidades presentes no modelo da Figura 1 estão descritos a seguir, junto aos seus atributos:
+
+\begin{itemize}
+				\item PORTAL: Tipo Entidade que representa um portal de notícias;
+
+\begin{itemize}
+\item URL: atributo chave que representa o endereço de rede do portal;
+\item Logo: atributo simples que representa a imagem do logotipo do portal;
+\item Nome: atributo simples que representa o nome do portal.
+\end{itemize}
+\end{itemize}
+\begin{itemize}
+\item PUBLICACAO: Tipo Entidade que representa uma publicação/notícia.
+\begin{itemize}
+\item Palavras\_chave: atributo simples multivalorado que representa as palavras relacionadas a publicação;
+\item Título: atributo simples que representa o título da publicação;
+\item Subtítulo: atributo simples que representa a manchete/descrição rápida da publicação;
+\item Tempo\_leitura: atributo simples que representa o tempo de leitura estimado da publicação;
+\item Imagem\_principal: atributo simples que representa a imagem de chamada da publicação;
+\item Texto: atributo simples que representa o conteúdo textual da publicação;
+\item Ultima\_modificacao: atributo simples que representa a última modificação realizada na publicação;
+\item URL: atributo chave que representa a URL da publicação;
+\item Timestamp\_obtencao: atributo que representa o momento em que a publicação foi indexada pelo crawler.
+
+\end{itemize}
+\end{itemize}
+\begin{itemize}
+
+\item PESSOA: Tipo Entidade que representa uma pessoa no minimundo;
+\begin{itemize}
+\item URL: atributo chave que representa uma URL relacionada à pessoa;
+\item Nome: atributo simples que representa o nome da pessoa;
+\item Imagem\_perfil: atributo simples que representa a foto de perfil da pessoa.
+\end{itemize}
+\end{itemize}
+\begin{itemize}
+\item AUTOR: Tipo Entidade que representa o escritor da publicação. É uma especialização de pessoa;
+				\begin{itemize}
+\item Palavras\_chave: atributo simples multivalorado que representa as palavras chaves das publicações que o autor escreve;
+\item Descricao: atributo simples que representa uma breve descrição sobre o autor.
+\item COMENTARIO: Tipo Entidade que representa um comentário na publicação.
+\item ID: atributo chave que representa um identificador para o comentário;
+\item Texto: atributo simples que representa o texto do comentário por uma pessoa;
+\item Timestamp\_escrita: atributo simples que representa o momento que o comentário foi feito.
+				\end{itemize}
+				\end{itemize}
+\subsection{Tipos Relacionamentos}
+
+Os tipos relacionamentos presentes no modelo da Figura 1 podem ser descritos em função dos Tipo Entidades envolvidos no relacionamento, da razão de cardinalidade e da restrição de parcialidade. A seguir será apresentado as informações de cada Tipo Relacionamento exposto no modelo EER.
+
+\begin{itemize}
+				
+\item ESTA\_EM
+
+Descreve a relação entre publicações e um portal, no qual uma publicação deve pertencer a somente um portal, mas um portal pode ter várias publicações.
+
+Tem-se, então, as seguintes propriedades:
+
+\begin{itemize}
+
+\item Entidades envolvidas: PUBLICACAO, PORTAL
+\item Razão de cardinalidade: 1 do lado de PUBLICACAO; N do lado de PORTAL
+\item Restrição de Parcialidade: Total do lado de PUBLICACAO                        Parcial do lado de PORTAL
+\item Como se lê: Publicação está em Portal; Portal possui Publicação
+\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+
+				\item ESCRITA\_POR
+
+Descreve a relação entre autores/escritores e publicações, no qual um autor pode escrever nenhuma ou várias publicações, e uma publicação pode ter nenhum, um ou mais de um autor (existem casos nos domínios usados onde não é indicado o autor da publicação).
+
+Tem-se, então, as seguintes propriedades:
+
+\begin{itemize}
+
+				\item Entidades envolvidas: PUBLICACAO, AUTOR
+				\item Razão de cardinalidade:     N do lado de PUBLICACAO;  N do lado de AUTOR
+				\item Restrição de Parcialidade: Parcial do lado de PUBLICACAO                        Parcial do lado de AUTOR
+				\item Como se lê: Publicação escrita por Autor; Autor escreve Publicação
+\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+				\item POSSUI
+
+Descreve a relação entre uma publicação e comentários feitos na publicação, no qual uma publicação pode conter nenhum ou vários comentários, enquanto que um comentário necessariamente deve estar contido em uma publicação.
+
+Tem-se, então, as seguintes propriedades:
+\begin{itemize}
+				\item Entidades envolvidas: PUBLICACAO, COMENTARIO
+				\item Razão de cardinalidade:     N do lado de PUBLICACAO
+                1 do lado de COMENTARIO
+				\item Restrição de Parcialidade: Parcial do lado de PUBLICACAO                        Total do lado de COMENTARIO
+				\item Como se lê: Publicação possui Comentário; Comentário está em Publicação
+\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+				\item ESCREVE
+
+Descreve a relação entre uma pessoa e os comentários feitos por esta pessoa, no qual uma pessoa pode fazer de nenhum à vários comentários, e por outro lado, um comentário é feito por uma única pessoa.
+
+Tem-se, então, as seguintes propriedades:
+\begin{itemize}
+
+\item Entidades envolvidas: PESSOA, COMENTARIO
+\item Razão de cardinalidade: N do lado de PESSOA; 1 do lado de COMENTARIO
+\item Restrição de Parcialidade: Parcial do lado de PESSOA                        Total do lado de COMENTARIO
+\item Como se lê: Pessoa escreve Comentario; Comentario é escrito por Pessoa
+\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+				\item RESPONDE
+
+Descreve a relação entre comentários, no qual um comentário pode ser respondido por nenhum, um ou vários outros comentários, e um comentário deve necessariamente ser escrito em resposta a nenhum (no caso do início de uma thread) ou a exclusivamente um comentário (no caso de continuação de uma thread).
+
+Tem-se, então, as seguintes propriedades:
+\begin{itemize}
+
+\item Entidades envolvidas: COMENTARIO, COMENTARIO (self-loop)
+\item Razão de cardinalidade:     N do lado de COMENTARIO                        ; 1 do lado de COMENTARIO
+\item Restrição de Parcialidade: Parcial do lado de COMENTARIO                        parcial do lado de COMENTARIO
+\item Como se lê: Comentário responde comentário; Comentário é respondido por Comentário
+\end{itemize}
+\end{itemize}
+
+\subsection{Especializações}
+
+Durante a elaboração do modelo EER foi proposto um relacionamento superclasse/subclasse para os tipos entidades.
+
+Este relacionamento superclasse/subclasse acontece entre o tipo entidade PESSOA (superclasse) e o tipo entidade AUTOR (subclasse). Este relacionamento veio da necessidade de especializar o tipo entidade PESSOA na subclasse AUTOR, dado que certos atributos e relacionamentos podem se aplicar a algumas, mas não a todas as entidades da superclasse PESSOA.
+
+ As propriedades gerais deste relacionamento estão descritas a seguir:
+ \begin{itemize}
+				 \item Superclasse: PESSOA
+				 \item Subclasse: AUTOR
+				 \item Processo adotado: Especialização
+				 \item Restrição de completude: Parcial
+ \end{itemize}
