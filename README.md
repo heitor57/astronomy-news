@@ -8,6 +8,7 @@
 ## Scrapy
 
 				pip install scrapy
+				python -mscrapy crawl ig -s JOBDIR=crawls/ig
 
 ## MongoDB Docker 
 
