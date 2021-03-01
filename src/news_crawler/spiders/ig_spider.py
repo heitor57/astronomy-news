@@ -92,16 +92,46 @@ class IGSpider(scrapy.Spider):
 
         comments = driver.page_source
 
-        from scrapy.http.response.html import HtmlResponse
-        ht = HtmlResponse(url=response.url, body=driver.page_source, encoding="utf-8", request=response.request)
-        open_in_browser(ht)
+        # from scrapy.http.response.html import HtmlResponse
+        # ht = HtmlResponse(url=response.url, body=driver.page_source, encoding="utf-8", request=response.request)
+        # open_in_browser(ht)
         self.log("Started Scanning comments")
         # self.expr.scanString(driver.page_source)
-        string = originalTextFor(self.expr).searchString(driver.page_source).asList()[0][0]
-        print(string)
-        comments_json = json.loads("{"+string+"}")["comments"]
-        self.log("Finished Scanning comments")
-        comments = json.dumps(comments_json,indent=2)
+        string = originalTextFor(self.expr).searchString(driver.page_source).asList()[0]
+        if len(string)>0:
+            string = string[0]
+            comments_json = json.loads("{"+string+"}")["comments"]
+            self.log("Finished Scanning comments")
+            # comments_ids = set(comments_json['commentsIDs'])
+            comments_ = []
+            objects = []
+            id_url = {}
+            users = []
+            for k,v in comments_json['idMap'].items():
+                if v['type'] == 'user' or v['type'] == 'ogobject':
+                    id_url[v['id']] = v['uri']
+                if v['type'] == 'user':
+                    users.append({
+                        'url':v['uri'],
+                        'name':v['name'],
+                        'image':v['thumbSrc'],
+                        })
+
+            for k,v in comments_json['idMap'].items():
+                if v['type'] == 'comment':
+                    v['authorID']
+                    v['targetID']
+                    v['timestamp']['time']
+                    v['body']['text']
+                # if i in comments_ids:
+                    # comments.append(i)
+                # else:
+                    # objects.append(i)
+            
+            comments = json.dumps(comments_json,indent=2)
+            print(comments)
+
+        # print(string)
         # comments = lxml.html.fromstring(driver.page_source)
 
         # comments = comments.xpath("*[@class='_3-8y _5nz1 clearfix']//*[class='_5mdd']")
