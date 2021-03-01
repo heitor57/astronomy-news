@@ -19,13 +19,13 @@ NEWSPIDER_MODULE = 'news_crawler.spiders'
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
 
-from shutil import which
+# from shutil import which
 
-SELENIUM_DRIVER_NAME = 'firefox'
-SELENIUM_DRIVER_EXECUTABLE_PATH = which('geckodriver')
+# SELENIUM_DRIVER_NAME = 'firefox'
+# SELENIUM_DRIVER_EXECUTABLE_PATH = which('geckodriver')
 # SELENIUM_DRIVER_ARGUMENTS=['-headless',"-width=1920","-height=1080",'-disable-web-security']  # '--headless' if using chrome instead of firefox
 # SELENIUM_DRIVER_ARGUMENTS=['-headless']  # '--headless' if using chrome instead of firefox
-SELENIUM_DRIVER_ARGUMENTS=[]  # '--headless' if using chrome instead of firefox
+# SELENIUM_DRIVER_ARGUMENTS=[]  # '--headless' if using chrome instead of firefox
 # SELENIUM_DRIVER_ARGUMENTS=['--headless']  # '--headless' if using chrome instead of firefox
 # CONCURRENT_REQUESTS = 1
 # CONCURRENT_REQUESTS_PER_DOMAIN=1

@@ -55,7 +55,7 @@ class IGSpider(scrapy.Spider):
     def start_requests(self): 
         from selenium.webdriver.firefox.options import Options
         self.opts = Options()
-        # self.opts.set_headless()
+        self.opts.set_headless()
         self.expr = Literal('"comments"')+Literal(':')+nestedExpr('{','}')
         for url in self.start_urls: 
             # yield SeleniumRequest(url=url, callback=self.parse)
