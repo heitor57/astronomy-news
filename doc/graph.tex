@@ -1,56 +1,4 @@
-\documentclass{standalone}
-\usepackage{tikz}
-\usetikzlibrary {arrows.meta,graphs,graphdrawing}
-\usegdlibrary {layered}
-\usetikzlibrary {graphs,graphdrawing,quotes} \usegdlibrary {force}
-\usetikzlibrary {graphs,graphdrawing} \usegdlibrary {trees}
-\usetikzlibrary{arrows}
-\usetikzlibrary{shapes}
-\usetikzlibrary{er}
-\usetikzlibrary{quotes}
-\usepackage[T1]{fontenc}
-\catcode`\_=12 % change catcode of "_" to "other" (no. 12)
-\begin{document}
-\newbox\underlinebox
-
-
-%\tikzset{entity/.style={draw,rectangle}}
-\tikzset{every relationship/.style={}}
-
-\tikzset{total/.style={double distance=1.5pt}}
-\tikzset{derived attribute/.style={attribute,dashed}}
-%\tikzset{attribute/.style={draw,ellipse}}
-\tikzset{multi attribute/.style={attribute,double distance=1.5pt}}
-\tikzset{weak entity/.style={entity,double}}
-\tikzset{
-				key attribute/.append style={
-								font=\rmfamily,
-								execute at begin node={%
-												\setbox\underlinebox=\hbox\bgroup
-								},
-								execute at end node={%
-												\egroup\underline{\box\underlinebox}%
-								}
-				}
-}
-\tikzset{pics/supsetarc/.style={code={
-				\draw (-0.1,0.15) to[out=0,in=0,looseness=3]    (-0.1,-0.15);}},
-				pics/subsetarc/.style={code={
-				\draw (0.1,0.15) to[out=180,in=180,looseness=3]    (0.1,-0.15);}},
-				supset/.style={to path={(\tikztostart) -- 
-				pic[pos=0.5,sloped,allow upside down] {supsetarc} (\tikztotarget)}},
-				subset/.style={to path={(\tikztostart) -- 
-pic[pos=0.5,sloped,allow upside down] {subsetarc} (\tikztotarget)}}}
-
-
-\tikzset{
-				%every attribute/.append style={fill=black!10,draw=black},
-				every relationship/.append style={fill=black!5,draw=black},
-				every entity/.append style={fill=black!5,draw=black},
-%every entity/.append style={fill=blue!20,draw=blue,thick},
-%every relationship/.append style={fill=orange!20,draw=orange,thick,aspect=1.5},
-}
-
+\catcode`\_=12 % category other
 \tikz[line width=1.1pt,font={\fontsize{9pt}{12}\selectfont}]
 \graph [random seed=10,layered layout,sibling distance=2.5cm,grow'=down]
 {
@@ -95,5 +43,4 @@ pic[pos=0.5,sloped,allow upside down] {subsetarc} (\tikztotarget)}}}
 				COMENTARIO --[edge label=1,total,pos=0.75] "ESCREVE"[relationship,nudge left=0.3cm] --[edge label=N,pos=0.25] PESSOA;
 				COMENTARIO --[out=-130,in=125,edge label=1,pos=0.75] "RESPONDE"[relationship,regardless at={(0.5,-5.7)}] --[edge label=N,out=65,in=-40,pos=0.25] COMENTARIO;
 };
-
-\end{document}
+\catcode`\_=8 % category subscript
