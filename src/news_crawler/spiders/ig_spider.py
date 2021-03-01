@@ -1,6 +1,6 @@
 import scrapy 
 from selenium.webdriver.support import expected_conditions as EC
-from ..items import Publication
+from ..items import Publication, Person
 import selenium
 import json
 import time
@@ -108,28 +108,40 @@ class IGSpider(scrapy.Spider):
             objects = []
             id_url = {}
             users = []
+            og_object_id = None
             for k,v in comments_json['idMap'].items():
+                if v['type'] == 'ogobject':
+                    if og_object_id is not None:
+                        raise SystemError
+                    og_object_id = v['id']
+
                 if v['type'] == 'user' or v['type'] == 'ogobject':
                     id_url[v['id']] = v['uri']
                 if v['type'] == 'user':
-                    users.append({
-                        'url':v['uri'],
-                        'name':v['name'],
-                        'image':v['thumbSrc'],
-                        })
+                    yield Person(url=v['uri'],
+                            name=v['name'],
+                            profile_image=v['thumbSrc'])
+            comments = []
+            def extract_comments(comment):
+                extracted_comment = {
+                        'author': id_url[comment['authorID']],
+                        # 'target': id_url[comment['targetID']],
+                        'text': comment['body']['text'],
+                        'timestamp': comment['timestamp']['time'],
+                        }
+                try:
+                    extracted_comment['replies'] = [extract_comments(comments_json['idMap'][i]) for i in comment['public_replies']['commentIDs']]
+                except Exception as e:
+                    pass
+                return extracted_comment
 
             for k,v in comments_json['idMap'].items():
-                if v['type'] == 'comment':
-                    v['authorID']
-                    v['targetID']
-                    v['timestamp']['time']
-                    v['body']['text']
-                # if i in comments_ids:
-                    # comments.append(i)
-                # else:
-                    # objects.append(i)
-            
-            comments = json.dumps(comments_json,indent=2)
+                if v['type'] == 'comment' and v['targetID'] in og_object_id:
+                    comment = extract_comments(v)
+                    comments.append(comment)
+
+            # comments = json.dumps(comments_json,indent=2)
+            print( json.dumps(comments_json,indent=2))
             # print(comments)
 
         # print(string)
@@ -144,7 +156,7 @@ class IGSpider(scrapy.Spider):
                 content += "\n"
         tags = None
 
-        yield Publication(title=title,subtitle=subtitle,author=authorlink,text=content)
+        yield Publication(title=title,subtitle=subtitle,author=authorlink,text=content,comments=comments)
         # yield {'title':title,'subtitle':subtitle,'author':author,'date':date,'text':content,'comments':comments}
         
     def parse(self, response):

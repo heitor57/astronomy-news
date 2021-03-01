@@ -22,14 +22,14 @@ class Publication(scrapy.Item):
     read_time = scrapy.Field()
     url = scrapy.Field()
     key_words = scrapy.Field()
+    comments = scrapy.Field()
 
 class Person(scrapy.Item):
     profile_image = scrapy.Field()
     url = scrapy.Field()
     name = scrapy.Field()
 
-class Author(Pessoa):
+class Author(Person):
     key_words = scrapy.Field()
     description = scrapy.Field()
-    
 
