@@ -8,3 +8,12 @@
 ## Scrapy
 
 				pip install scrapy
+
+## MongoDB Docker 
+
+				# docker service on...
+				systemctl start docker
+				docker pull mongo
+				docker run --name main-mongo -d mongo:latest
+				# Help commands
+				docker exec -it main-mongo mongo news_crawler --eval "db.dropDatabase()"
