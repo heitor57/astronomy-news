@@ -43,5 +43,6 @@ class NewsCrawlerPipeline:
     def process_item(self, item, spider):
         if isinstance(item, scrapy.Item):
             self.db[item.__class__.__name__].insert_one(ItemAdapter(item).asdict())
-        self.db[self.collection_name].insert_one(ItemAdapter(item).asdict())
+        else:
+            self.db[self.collection_name].insert_one(ItemAdapter(item).asdict())
         return item
