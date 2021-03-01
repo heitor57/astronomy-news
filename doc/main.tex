@@ -3,10 +3,39 @@
 %\usepackage{tgschola}
 \usepackage{hyphenat}
 \usepackage{listings}
-\usepackage{hyperref}
+\usepackage{hyperref,adjustbox}
 \usepackage{graphicx}
 \usepackage{pdfpages}
 \usepackage[brazilian]{babel}
+
+\usepackage{multirow}
+\usepackage{amssymb}
+\usepackage{tabulary}
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+\newcolumntype{K}[1]{>{\centering\arraybackslash}p{#1}}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes}
+\usepackage[T1]{fontenc}
+
+\usetikzlibrary {arrows.meta,graphs,graphdrawing}
+\usegdlibrary {layered}
+\usetikzlibrary {graphs,graphdrawing,quotes} \usegdlibrary {force}
+\usetikzlibrary {graphs,graphdrawing} \usegdlibrary {trees}
+\usetikzlibrary{arrows, decorations.markings}
+\usetikzlibrary{arrows}
+\usetikzlibrary{shapes}
+\usetikzlibrary{er}
+\usetikzlibrary{quotes}
+\usetikzlibrary{positioning}
+\tikzstyle{vecArrow} = [thick, decoration={markings,mark=at position
+   1 with {\arrow[semithick]{open triangle 60}}},
+   double distance=1.4pt, shorten >= 5.5pt,
+   preaction = {decorate},
+   postaction = {draw,line width=1.4pt, white,shorten >= 4.5pt}]
+
 \title{Trabalho Prático - Parte 1 \\
 \large Crawler para notícias de astronomia}
 

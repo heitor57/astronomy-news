@@ -1,24 +1,3 @@
-\documentclass{standalone}
-\usepackage{tikz}
-\usetikzlibrary{shapes}
-\usepackage[T1]{fontenc}
-
-\usetikzlibrary {arrows.meta,graphs,graphdrawing}
-\usegdlibrary {layered}
-\usetikzlibrary {graphs,graphdrawing,quotes} \usegdlibrary {force}
-\usetikzlibrary {graphs,graphdrawing} \usegdlibrary {trees}
-\usetikzlibrary{arrows, decorations.markings}
-\usetikzlibrary{arrows}
-\usetikzlibrary{shapes}
-\usetikzlibrary{er}
-\usetikzlibrary{quotes}
-\usetikzlibrary{positioning}
-\tikzstyle{vecArrow} = [thick, decoration={markings,mark=at position
-   1 with {\arrow[semithick]{open triangle 60}}},
-   double distance=1.4pt, shorten >= 5.5pt,
-   preaction = {decorate},
-   postaction = {draw,line width=1.4pt, white,shorten >= 4.5pt}]
-\begin{document}
 
 \begin{tikzpicture}[every node/.style={text width=2cm,align=center},comp/.style={draw,circle},node distance=5.5cm]
 				\node[draw, rectangle] (1) {Usuário interno};
@@ -40,4 +19,3 @@
 				%"Usuário interno" ->[edge label=Seed URL] {"Carrega a página da URL" -> {"Extrai Links", "Lista de URLs", "HTML Parser"} },
 				%{"Extrai Links", "Lista de URLs", "HTML Parser"} -> "Carrega a página da URL"
 %};
-\end{document}
