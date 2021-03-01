@@ -5,8 +5,10 @@
 
 
 # useful for handling different item types with a single interface
+import scrapy
 import pymongo
 from itemadapter import ItemAdapter
+import items
 
 
 # class NewsCrawlerPipeline:
@@ -26,7 +28,7 @@ class NewsCrawlerPipeline:
     def from_crawler(cls, crawler):
         return cls(
             mongo_uri=crawler.settings.get('MONGO_URI'),
-            mongo_db=crawler.settings.get('MONGO_DATABASE', 'items')
+            mongo_db=crawler.settings.get('MONGO_DATABASE', 'news_crawler')
         )
 
     def open_spider(self, spider):
@@ -37,5 +39,7 @@ class NewsCrawlerPipeline:
         self.client.close()
 
     def process_item(self, item, spider):
+        if isinstance(item, scrapy.Item):
+            self.db[item.__class__.__name__].insert_one(ItemAdapter(item).asdict())
         self.db[self.collection_name].insert_one(ItemAdapter(item).asdict())
         return item

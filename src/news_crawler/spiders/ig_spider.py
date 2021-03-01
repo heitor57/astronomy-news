@@ -141,7 +141,7 @@ class IGSpider(scrapy.Spider):
                     comments.append(comment)
 
             # comments = json.dumps(comments_json,indent=2)
-            print( json.dumps(comments_json,indent=2))
+            # print( json.dumps(comments_json,indent=2))
             # print(comments)
 
         # print(string)
