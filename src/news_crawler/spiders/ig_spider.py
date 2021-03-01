@@ -44,7 +44,8 @@ class IGSpider(scrapy.Spider):
     name = "ig"
     allowed_domains=['ultimosegundo.ig.com.br']
     # start_urls =['https://ultimosegundo.ig.com.br/colunas/astronoticias/']
-    start_urls =['https://ultimosegundo.ig.com.br/colunas/astronoticias/2019-10-25/estrelas-binarias-em-uma-rosquinha-cosmica.html']
+    # start_urls =['https://ultimosegundo.ig.com.br/colunas/astronoticias/2019-10-25/estrelas-binarias-em-uma-rosquinha-cosmica.html']
+    start_urls =['https://ultimosegundo.ig.com.br/colunas/astronoticias/2019-07-02/eclipse-solar-2019.html']
 
     def start_requests(self): 
         for url in self.start_urls: 
@@ -114,6 +115,7 @@ class IGSpider(scrapy.Spider):
 
         for target_url in target_urls:
             yield SeleniumRequest(url=target_url, callback=self.parse_target)
+
 
         if len(urls) > 0:
             for url in urls:
