@@ -170,14 +170,18 @@ class IGSpider(scrapy.Spider):
 
         driver.close()
 
-        yield Publication(title=title,subtitle=subtitle,author=authorlink,text=content,comments=comments)
+        from datetime import datetime
+        now = datetime.now()
+
+        timestamp = datetime.timestamp(now)
+        yield Publication(url=response.url,title=title,subtitle=subtitle,author=authorlink,text=content,comments=comments,obtained=timestamp)
         # yield {'title':title,'subtitle':subtitle,'author':author,'date':date,'text':content,'comments':comments}
         
     def parse(self, response):
         driver = webdriver.Firefox(options=self.opts)
         driver.get(response.url)
         # driver = response.request.meta['driver']
-        time.sleep(3)
+        time.sleep(7)
         tree = lxml.html.fromstring(driver.page_source)
         urls = tree.xpath('//a/@href')
 
