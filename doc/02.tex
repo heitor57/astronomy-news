@@ -7,7 +7,7 @@ Procurou-se pela maior gama possível de portais de notícias brasileiros releva
 A Tabela 1 mostra os portais e suas respectivas seeds na qual o crawler irá realizar a varredura completa em busca dos links contidos a partir da seed.
 
 
-\begin{table}
+\begin{table}[H]
 \begin{tabular}{|c|c|}
 \hline
 Domínio & Seed\\\hline
@@ -32,7 +32,7 @@ Para cada domínio em questão, foram mapeados os dados que seriam possíveis de
  
 O mapeamento foi realizado de acordo com a seguinte metodologia: para cada domínio, foram acessados no mínimo cinco publicações aleatórias (link para as publicações) e em cada uma delas anotado quais componentes apareciam de maneira coletável em seu código HTML. Se um componente aparecer ao menos uma vez em alguma das páginas acessadas do domínio, será implementado no algoritmo de coleta de dados, para este domínio, uma rotina que irá extrair os dados deste componente sempre que o mesmo estiver contido no HTML da publicação. A Tabela 2 apresenta as informações obtidas a partir destas ponderações.  
 
-\begin{table}
+\begin{table}[H]
 \noindent\makebox[\textwidth]{%
 \input{content_table_1.tex}}
 \caption{Dados possíveis de serem coletados nas publicações de cada domínio.}
