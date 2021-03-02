@@ -23,7 +23,7 @@ Os tipos entidades presentes no modelo da Figura 1 estão descritos a seguir, ju
 
 				\item PORTAL: Tipo entidade que representa um portal de notícias;
 
-								O tipo entidade Portal é importante para identificação da origem da extração dos dados, a URL é utilizada como identificador assim como em outros tipo entidade devido as caracteristícas desse minimundo.
+								O tipo entidade Portal é importante para identificação da origem da extração dos dados, a URL é utilizada como identificador assim como em outros tipo entidade devido as caracteristícas desse minimundo. Logo e nome vão ser atributos importantes na fase da implementação da apresentação dos dados obtidos na coleta de dados.
 \begin{itemize}
 \item URL: atributo chave que representa o endereço de rede do portal;
 \item Logo: atributo simples que representa a imagem do logotipo do portal;
@@ -32,13 +32,15 @@ Os tipos entidades presentes no modelo da Figura 1 estão descritos a seguir, ju
 \end{itemize}
 \begin{itemize}
 \item PUBLICACAO: Tipo entidade que representa uma publicação/notícia.
+
+				O tipo entidade PUBLICACAO possue grande variedade de atributos, alguns deles são para apresentação da notícia como por exemplo Título, Subtítulo, Imagem\_principal. Alguns atributos são metadados referentes a uma publicação (PUBLICACAO), como por exemplo tempo de leitura (Tempo\_leitura), ultima modificação (Ultima\_modificacao). Por fim utilizamos um atributo como metadado referente a coleta dos dados que é o Timestamp\_obtencao, esse atributo foi criado, pois é importante o registro do tempo de obtenção para decisões futuras sobre atualização da base entre outras razões.
 \begin{itemize}
 \item Palavras\_chave: atributo simples multivalorado que representa as palavras relacionadas a publicação;
 \item Título: atributo simples que representa o título da publicação;
 \item Subtítulo: atributo simples que representa a manchete/descrição rápida da publicação;
 \item Tempo\_leitura: atributo simples que representa o tempo de leitura estimado da publicação;
 \item Imagem\_principal: atributo simples que representa a imagem de chamada da publicação;
-\item Texto: atributo simples que representa o conteúdo textual da publicação;
+\item Conteudo: atributo simples que representa o conteúdo principal da publicação;
 \item Ultima\_modificacao: atributo simples que representa a última modificação realizada na publicação;
 \item URL: atributo chave que representa a URL da publicação;
 \item Timestamp\_obtencao: atributo que representa o momento em que a publicação foi indexada pelo crawler.
@@ -48,6 +50,8 @@ Os tipos entidades presentes no modelo da Figura 1 estão descritos a seguir, ju
 \begin{itemize}
 
 \item PESSOA: Tipo entidade que representa uma pessoa no minimundo;
+
+				Esse é um tipo entidade importante para definição, pois modela pessoas diversas que interagem nesse minimundo por comentários (poderia ser outros meios) e não possuem atributos e relações que um autor de publicações possui.
 \begin{itemize}
 \item URL: atributo chave que representa uma URL relacionada à pessoa;
 \item Nome: atributo simples que representa o nome da pessoa;
@@ -56,6 +60,8 @@ Os tipos entidades presentes no modelo da Figura 1 estão descritos a seguir, ju
 \end{itemize}
 \begin{itemize}
 \item AUTOR: Tipo entidade que representa o escritor da publicação. É uma especialização de pessoa;
+
+				AUTOR é uma especialização de PESSOA como dito anteriormente, possui um relacionamento com PUBLICACAO, e além disso possui metadados para descrição do autor de diferentes formas por meio dos atributos Palavras\_chave, Descricao.
 				\begin{itemize}
 \item Palavras\_chave: atributo simples multivalorado que representa as palavras chaves das publicações que o autor escreve;
 \item Descricao: atributo simples que representa uma breve descrição sobre o autor.
@@ -63,6 +69,8 @@ Os tipos entidades presentes no modelo da Figura 1 estão descritos a seguir, ju
 				\end{itemize}
 				\begin{itemize}
 \item COMENTARIO: Tipo entidade que representa um comentário na publicação.
+
+				Esse tipo entidade representa um comentário que uma pessoa faz. Esse comentário é destinado a uma publicação, e em certos casos é uma resposta a outros comentários.
 				\begin{itemize}
 \item ID: atributo chave que representa um identificador para o comentário;
 \item Texto: atributo simples que representa o texto do comentário por uma pessoa;
@@ -71,7 +79,7 @@ Os tipos entidades presentes no modelo da Figura 1 estão descritos a seguir, ju
 				\end{itemize}
 \subsection{Tipos Relacionamentos}
 
-Os tipos relacionamentos presentes no modelo da Figura 1 podem ser descritos em função dos tipo entidades envolvidos no relacionamento, da razão de cardinalidade e da restrição de parcialidade. A seguir será apresentado as informações de cada Tipo Relacionamento exposto no modelo EER.
+Os tipos relacionamentos presentes no modelo da Figura 1 podem ser descritos em função dos tipo entidades envolvidos no relacionamento, da razão de cardinalidade e da restrição de parcialidade. A seguir será apresentado as informações de cada tipo relacionamento exposto no modelo EER.
 
 \begin{itemize}
 				
@@ -83,10 +91,10 @@ Tem-se, então, as seguintes propriedades:
 
 \begin{itemize}
 
-\item Entidades envolvidas: PUBLICACAO, PORTAL
-\item Razão de cardinalidade: 1 do lado de PUBLICACAO; N do lado de PORTAL
-\item Restrição de Parcialidade: Total do lado de PUBLICACAO                        Parcial do lado de PORTAL
-\item Como se lê: Publicação está em Portal; Portal possui Publicação
+\item Entidades envolvidas: PUBLICACAO, PORTAL;
+\item Razão de cardinalidade: PUBLICACAO:PORTAL tem razão de cardinalidade N:1;
+\item Restrição de Parcialidade: Parcial do lado de PUBLICACAO; Total do lado de PORTAL;
+\item Como se lê: Publicação está em Portal; Portal possui Publicação;
 \end{itemize}
 \end{itemize}
 
@@ -100,10 +108,10 @@ Tem-se, então, as seguintes propriedades:
 
 \begin{itemize}
 
-				\item Entidades envolvidas: PUBLICACAO, AUTOR
-				\item Razão de cardinalidade:     N do lado de PUBLICACAO;  N do lado de AUTOR
-				\item Restrição de Parcialidade: Parcial do lado de PUBLICACAO                        Parcial do lado de AUTOR
-				\item Como se lê: Publicação escrita por Autor; Autor escreve Publicação
+				\item Entidades envolvidas: PUBLICACAO, AUTOR;
+				\item Razão de cardinalidade: PUBLICACAO:AUTOR tem razão de cardinalidade N:N;
+				\item Restrição de Parcialidade: Parcial do lado de PUBLICACAO; Parcial do lado de AUTOR;
+				\item Como se lê: Publicação escrita por Autor; Autor escreve Publicação.
 \end{itemize}
 \end{itemize}
 
@@ -114,10 +122,9 @@ Descreve a relação entre uma publicação e comentários feitos na publicaçã
 
 Tem-se, então, as seguintes propriedades:
 \begin{itemize}
-				\item Entidades envolvidas: PUBLICACAO, COMENTARIO
-				\item Razão de cardinalidade:     N do lado de PUBLICACAO
-                1 do lado de COMENTARIO
-				\item Restrição de Parcialidade: Parcial do lado de PUBLICACAO                        Total do lado de COMENTARIO
+				\item Entidades envolvidas: PUBLICACAO, COMENTARIO;
+				\item Razão de cardinalidade: PUBLICACAO:COMENTARIO tem razão de cardinalidade 1:N;
+				\item Restrição de Parcialidade: Total do lado de PUBLICACAO; Parcial do lado de COMENTARIO;
 				\item Como se lê: Publicação possui Comentário; Comentário está em Publicação
 \end{itemize}
 \end{itemize}
@@ -130,10 +137,10 @@ Descreve a relação entre uma pessoa e os comentários feitos por esta pessoa, 
 Tem-se, então, as seguintes propriedades:
 \begin{itemize}
 
-\item Entidades envolvidas: PESSOA, COMENTARIO
-\item Razão de cardinalidade: N do lado de PESSOA; 1 do lado de COMENTARIO
-\item Restrição de Parcialidade: Parcial do lado de PESSOA                        Total do lado de COMENTARIO
-\item Como se lê: Pessoa escreve Comentario; Comentario é escrito por Pessoa
+\item Entidades envolvidas: PESSOA, COMENTARIO;
+\item Razão de cardinalidade: PESSOA:COMENTARIO possui razão de cardinalidade 1:N;
+\item Restrição de Parcialidade: Total do lado de PESSOA; Parcial do lado de COMENTARIO;
+\item Como se lê: Pessoa escreve Comentario; Comentario é escrito por Pessoa.
 \end{itemize}
 \end{itemize}
 
@@ -145,9 +152,9 @@ Descreve a relação entre comentários, no qual um comentário pode ser respond
 Tem-se, então, as seguintes propriedades:
 \begin{itemize}
 
-\item Entidades envolvidas: COMENTARIO, COMENTARIO (self-loop)
-\item Razão de cardinalidade:     N do lado de COMENTARIO                        ; 1 do lado de COMENTARIO
-\item Restrição de Parcialidade: Parcial do lado de COMENTARIO                        parcial do lado de COMENTARIO
+\item Entidades envolvidas: COMENTARIO, COMENTARIO;
+\item Razão de cardinalidade: COMENTARIO:COMENTARIO 1:N;
+\item Restrição de Parcialidade: Parcial de ambos lados;
 \item Como se lê: Comentário responde comentário; Comentário é respondido por Comentário
 \end{itemize}
 \end{itemize}
