@@ -46,7 +46,7 @@ O mapeamento foi realizado de acordo com a seguinte metodologia: para cada domí
 \caption{Dados possíveis de serem coletados nas publicações de cada domínio.}
 \end{table}
 
-De acordo com a Tabela 2, pode-se observar que seis dados são possíveis de extrair da página para todos os domínios, são eles: título, descrição (texto chamada da matéria), imagem principal (imagem de chamada da matéria), data (última modificação na publicação), conteúdo (o corpo da matéria em si) e o autor/escritor da publicação. Este último contém peculiaridades, visto que algumas publicações não especificam unitariamente quem é o autor, como em casos nos quais a autoria da publicação é destinada à “Redação”. Pretende-se utilizar os dados dos autores em uma funcionalidade extra na aplicação final, porém nesta funcionalidade informações de autoria como “Redação” não terão serventia, sendo necessário uma filtragem nos dados deste tipo.
+De acordo com a Tabela 2, pode-se observar que seis dados são possíveis de extrair da página para todos os domínios, são eles: título, descrição (texto chamada da matéria), imagem principal (imagem de chamada da matéria), data (última modificação na publicação), conteúdo (o corpo da matéria em si) e o autor/escritor da publicação. Este último contém peculiaridades, visto que algumas publicações não especificam unitariamente quem é o autor, como em casos nos quais a autoria da publicação é destinada à 'Redação'. Pretende-se utilizar os dados dos autores em uma funcionalidade extra na aplicação final, porém nesta funcionalidade informações de autoria como 'Redação' não terão serventia, sendo necessário uma filtragem nos dados deste tipo.
 
 Ainda sobre a Tabela 2, poucos domínios informam o tempo de leitura em suas publicações, apenas dois. Mesmo assim, foi optado por armazenar este dado no banco de dados, pois estuda-se desenvolver um algoritmo que estime o tempo de leitura para os domínios que não provêm esta informação. A respeito dos comentários, alguns domínios oferecem esta funcionalidade aos leitores. Para os domínios que oferecem, existem àqueles que usam o plugin Disqus, àqueles que usam o plugin do Facebook e àqueles que implementaram o seu próprio sistema de comentários, sendo necessário diferentes métodos para coletar estas informações. Nos sites que usam o sistema do Disqus existe ainda a funcionalidade “Reação” que permite o usuário reagir à publicação com um emoji.
 
@@ -54,7 +54,7 @@ Finalizando o estudo da Tabela 2, grande parte dos domínios dispõe, em algum p
 
 Para a coleta do conteúdo da matéria em si (o corpo da publicação), deve ser levado em consideração quais elementos podem figurar entre os parágrafos textuais da publicação. O caminho fácil seria coletar somente os textos, porém foi uma decisão de projeto manter o máximo possível da integridade e originalidade do conteúdo exposto na publicação, tornando-se necessário observar também o que pode estar contido no meio do conteúdo textual da matéria. 
 
-Sendo assim, a mesma metodologia descrita anteriormente foi utilizada para o processo de análise e reconhecimento dos conteúdos das publicações de cada domínio e como deve ser implementado o seu respectivo coletor. As informações obtidas destas observações são apresentadas na Tabela 3.  
+Sendo assim, a mesma metodologia descrita anteriormente foi utilizada para o processo de análise e reconhecimento dos conteúdos das publicações de cada domínio e como deve ser implementado o seu respectivo coletor. As informações obtidas destas observações são apresentadas na Tabela 3.
 
 \begin{table}[H]
 

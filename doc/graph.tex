@@ -35,12 +35,12 @@
 												NomePessoa[as=Nome,attribute], AUTOR_URL[as=URL,key attribute], Imagem_perfil[attribute]
 								},
 				},
-				PUBLICACAO --[edge label=N,pos=0.95] "ESTA_EM"[relationship] --[total,edge label=1,pos=0.25] PORTAL,
+				PUBLICACAO --[total,edge label=N,pos=0.95] "ESTA_EM"[relationship] --[edge label=1,pos=0.25] PORTAL,
 				PUBLICACAO --[edge label=N,pos=0.95] "ESCRITA_POR"[relationship] --[edge label=N,pos=0.15] AUTOR,
 				%PAGINA --[supset] PUBLICACAO,
 				AUTOR --[subset] PESSOA,
-				PUBLICACAO --[total,edge label=1,pos=0.95] POSSUI[relationship] --[edge label=N,pos=0.05] COMENTARIO;
-				COMENTARIO --[edge label=N,pos=0.75] "ESCREVE"[relationship,nudge left=0.3cm] --[edge label=1,pos=0.25,total] PESSOA;
+				PUBLICACAO --[edge label=1,pos=0.95] POSSUI[relationship] --[total,edge label=N,pos=0.05] COMENTARIO;
+				COMENTARIO --[edge label=N,pos=0.75,total] "ESCREVE"[relationship,nudge left=0.3cm] --[edge label=1,pos=0.25] PESSOA;
 				COMENTARIO --[out=-130,in=125,edge label=N,pos=0.75] "RESPONDE"[relationship,regardless at={(0.5,-5.7)}] --[edge label=1,out=65,in=-40,pos=0.25] COMENTARIO;
 };
 \catcode`\_=8 % category subscript
