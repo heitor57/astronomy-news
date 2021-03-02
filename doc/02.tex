@@ -1,75 +1,165 @@
+\section{Modelo Conceitual Banco De Dados}
 
-\section{Coletor De Dados}
+Para modelar conceitualmente o Banco de Dados foi utilizado o Modelo Entidade-Relacionamento Estendido (Modelo EER). A princípio foram definidos alguns elementos do tipo entidade e do tipo relacionamento que seriam essenciais para a estrutura do Banco de Dados, como por exemplo:
 
-\subsection{Crawler}
-Procurou-se pela maior gama possível de portais de notícias brasileiros relevantes que possuíam uma sessão destinada a assuntos relacionados à astronomia para serem varridos e indexados pelo crawler.
+\begin{itemize}
+				\item Tipo Entidade: Portal, Publicação, Pessoa, Autor, Comentário; 
 
-A Tabela 1 mostra os portais e suas respectivas seeds na qual o crawler irá realizar a varredura completa em busca dos links contidos a partir da seed.
+				\item  Tipo Relacionamento: Publicação ESTA\_EM Portal, Publicação ESCRITA\_POR Autor, Pessoa ESCREVE Comentário;
+\end{itemize}
 
+Através da análise detalhada do minimundo, e refinamentos no modelo pré-estabelecido, obteve-se o modelo mostrado na Figura 1.
 
-\begin{table}[H]
-\begin{tabular}{|c|c|}
-\hline
-Domínio & Seed\\\hline
-TecMundo & tecmundo.com.br/astronomia \\\hline
-BBC & bbc.com/portuguese/topics/ckdxnd38v03t\\\hline
-UOL & uol.com.br/tilt/astronomia/\\\hline
-R7 & noticias.r7.com/tecnologia-e-ciencia/astronomia \\\hline
-Veja & veja.abril.com.br/noticias-sobre/astronomia/ \\\hline
-IG & ultimosegundo.ig.com.br/noticias/espaço \\\hline
-Terra & terra.com.br/noticias/ciencia/espaco/\\\hline
-Jornal USP & jornal.usp.br/tag/astronomia/\\\hline
-Revista Galileu & revistagalileu.globo.com/Ciencia/Espaco/\\\hline
-Exame & exame.com/noticias-sobre/espaco/\\\hline
-CanalTech & canaltech.com.br/espaco/\\\hline
-\end{tabular}
-\caption{Seeds referentes aos conteúdos de astronomia para cada domínio.}
-\end{table}
+\begin{figure}[H]
+				\centering
+\input{graph.tex}
+\caption{Modelo EER.}
+\end{figure}
+\subsection{Tipos Entidades}
 
+Os Tipos Entidades presentes no modelo da Figura 1 estão descritos a seguir, junto aos seus atributos:
 
-\subsection{Scraping}
-Para cada domínio em questão, foram mapeados os dados que seriam possíveis de serem coletados pelo seu respectivo algoritmo coletor.
- 
-O mapeamento foi realizado de acordo com a seguinte metodologia: para cada domínio, foram acessados no mínimo cinco publicações aleatórias (link para as publicações) e em cada uma delas anotado quais componentes apareciam de maneira coletável em seu código HTML. Se um componente aparecer ao menos uma vez em alguma das páginas acessadas do domínio, será implementado no algoritmo de coleta de dados, para este domínio, uma rotina que irá extrair os dados deste componente sempre que o mesmo estiver contido no HTML da publicação. A Tabela 2 apresenta as informações obtidas a partir destas ponderações.  
+\begin{itemize}
+				\item PORTAL: Tipo Entidade que representa um portal de notícias;
 
-\begin{table}[H]
-\noindent\makebox[\textwidth]{%
-\input{content_table_1.tex}}
-\caption{Dados possíveis de serem coletados nas publicações de cada domínio.}
-\end{table}
+\begin{itemize}
+\item URL: atributo chave que representa o endereço de rede do portal;
+\item Logo: atributo simples que representa a imagem do logotipo do portal;
+\item Nome: atributo simples que representa o nome do portal.
+\end{itemize}
+\end{itemize}
+\begin{itemize}
+\item PUBLICACAO: Tipo Entidade que representa uma publicação/notícia.
+\begin{itemize}
+\item Palavras\_chave: atributo simples multivalorado que representa as palavras relacionadas a publicação;
+\item Título: atributo simples que representa o título da publicação;
+\item Subtítulo: atributo simples que representa a manchete/descrição rápida da publicação;
+\item Tempo\_leitura: atributo simples que representa o tempo de leitura estimado da publicação;
+\item Imagem\_principal: atributo simples que representa a imagem de chamada da publicação;
+\item Texto: atributo simples que representa o conteúdo textual da publicação;
+\item Ultima\_modificacao: atributo simples que representa a última modificação realizada na publicação;
+\item URL: atributo chave que representa a URL da publicação;
+\item Timestamp\_obtencao: atributo que representa o momento em que a publicação foi indexada pelo crawler.
 
-De acordo com a Tabela 2, pode-se observar que seis dados são possíveis de extrair da página para todos os domínios, são eles: título, descrição (texto chamada da matéria), imagem principal (imagem de chamada da matéria), data (última modificação na publicação), conteúdo (o corpo da matéria em si) e o autor/escritor da publicação. Este último contém peculiaridades, visto que algumas publicações não especificam unitariamente quem é o autor, como em casos nos quais a autoria da publicação é destinada à “Redação”. Pretende-se utilizar os dados dos autores em uma funcionalidade extra na aplicação final, porém nesta funcionalidade informações de autoria como “Redação” não terão serventia, sendo necessário uma filtragem nos dados deste tipo.
+\end{itemize}
+\end{itemize}
+\begin{itemize}
 
-Ainda sobre a Tabela 2, poucos domínios informam o tempo de leitura em suas publicações, apenas dois. Mesmo assim, foi optado por armazenar este dado no banco de dados, pois estuda-se desenvolver um algoritmo que estime o tempo de leitura para os domínios que não provêm esta informação. A respeito dos comentários, alguns domínios oferecem esta funcionalidade aos leitores. Para os domínios que oferecem, existem àqueles que usam o plugin Disqus, àqueles que usam o plugin do Facebook e àqueles que implementaram o seu próprio sistema de comentários, sendo necessário diferentes métodos para coletar estas informações. Nos sites que usam o sistema do Disqus existe ainda a funcionalidade “Reação” que permite o usuário reagir à publicação com um emoji.
+\item PESSOA: Tipo Entidade que representa uma pessoa no minimundo;
+\begin{itemize}
+\item URL: atributo chave que representa uma URL relacionada à pessoa;
+\item Nome: atributo simples que representa o nome da pessoa;
+\item Imagem\_perfil: atributo simples que representa a foto de perfil da pessoa.
+\end{itemize}
+\end{itemize}
+\begin{itemize}
+\item AUTOR: Tipo Entidade que representa o escritor da publicação. É uma especialização de pessoa;
+				\begin{itemize}
+\item Palavras\_chave: atributo simples multivalorado que representa as palavras chaves das publicações que o autor escreve;
+\item Descricao: atributo simples que representa uma breve descrição sobre o autor.
+				\end{itemize}
+				\end{itemize}
+				\begin{itemize}
+\item COMENTARIO: Tipo Entidade que representa um comentário na publicação.
+				\begin{itemize}
+\item ID: atributo chave que representa um identificador para o comentário;
+\item Texto: atributo simples que representa o texto do comentário por uma pessoa;
+\item Timestamp\_escrita: atributo simples que representa o momento que o comentário foi feito.
+				\end{itemize}
+				\end{itemize}
+\subsection{Tipos Relacionamentos}
 
-Finalizando o estudo da Tabela 2, grande parte dos domínios dispõe, em algum ponto do código HTML, de um conjunto de palavras chaves, “tags”, que na aplicação a ser desenvolvida servirá de classificação dos sub-temas das publicações.
+Os tipos relacionamentos presentes no modelo da Figura 1 podem ser descritos em função dos Tipo Entidades envolvidos no relacionamento, da razão de cardinalidade e da restrição de parcialidade. A seguir será apresentado as informações de cada Tipo Relacionamento exposto no modelo EER.
 
-Para a coleta do conteúdo da matéria em si (o corpo da publicação), deve ser levado em consideração quais elementos podem figurar entre os parágrafos textuais da publicação. O caminho fácil seria coletar somente os textos, porém foi uma decisão de projeto manter o máximo possível da integridade e originalidade do conteúdo exposto na publicação, tornando-se necessário observar também o que pode estar contido no meio do conteúdo textual da matéria. 
+\begin{itemize}
+				
+\item ESTA\_EM
 
-Sendo assim, a mesma metodologia descrita anteriormente foi utilizada para o processo de análise e reconhecimento dos conteúdos das publicações de cada domínio e como deve ser implementado o seu respectivo coletor. As informações obtidas destas observações são apresentadas na Tabela 3.  
+Descreve a relação entre publicações e um portal, no qual uma publicação deve pertencer a somente um portal, mas um portal pode ter várias publicações.
 
+Tem-se, então, as seguintes propriedades:
 
-%A linguagem de programação utilizada para a implementação dos coletores de dados será o Python, com o auxílio da biblioteca requests e requests-html para realizar as requisições GET das URLs indexadas pelo crawler e da biblioteca BeautifulSoup para acessar os ‘nós’ da estrutura do HTML da página ou até mesmo classes e extrair as informações nelas contidas.
+\begin{itemize}
 
-%Tomando como exemplo o domínio TecMundo, através da análise da estrutura do HTML das publicações contidas na seed “tecmundo.com.br/astronomia/” o coletor de dados pode ser projetado da forma descrita a seguir:
+\item Entidades envolvidas: PUBLICACAO, PORTAL
+\item Razão de cardinalidade: 1 do lado de PUBLICACAO; N do lado de PORTAL
+\item Restrição de Parcialidade: Total do lado de PUBLICACAO                        Parcial do lado de PORTAL
+\item Como se lê: Publicação está em Portal; Portal possui Publicação
+\end{itemize}
+\end{itemize}
 
-%Dada uma URL indexada pelo crawler para este domínio, realiza-se uma requisição GET, e obtém-se o código HTML da página provida pela URL. Este código HTML é convertido para um objeto da classe BeautifulSoup e armazenado em uma variável (soup) para que possa ser realizado a busca e extração de dados dentro do DOM.
+\begin{itemize}
 
-%Em seguida, começa-se a coleta de dados com a função find() da biblioteca BeautifulSoup.
+				\item ESCRITA\_POR
 
-%O título da matéria é extraído com a seguinte declaração:
+Descreve a relação entre autores/escritores e publicações, no qual um autor pode escrever nenhuma ou várias publicações, e uma publicação pode ter nenhum, um ou mais de um autor (existem casos nos domínios usados onde não é indicado o autor da publicação).
 
-%soup.find('meta', property='og:title').get('content')
+Tem-se, então, as seguintes propriedades:
 
+\begin{itemize}
 
-%Nesta declaração, estamos buscando por um elemento HTML <meta> com um atributo property que recebe o valor ‘og:title’, deste elemento, queremos o valor contido no atributo ‘content’.
+				\item Entidades envolvidas: PUBLICACAO, AUTOR
+				\item Razão de cardinalidade:     N do lado de PUBLICACAO;  N do lado de AUTOR
+				\item Restrição de Parcialidade: Parcial do lado de PUBLICACAO                        Parcial do lado de AUTOR
+				\item Como se lê: Publicação escrita por Autor; Autor escreve Publicação
+\end{itemize}
+\end{itemize}
 
-%O nome do colunista é obtido pela declaração abaixo: 
+\begin{itemize}
+				\item POSSUI
 
-%soup.find(a, class_='tec--author__info__link').string
+Descreve a relação entre uma publicação e comentários feitos na publicação, no qual uma publicação pode conter nenhum ou vários comentários, enquanto que um comentário necessariamente deve estar contido em uma publicação.
 
+Tem-se, então, as seguintes propriedades:
+\begin{itemize}
+				\item Entidades envolvidas: PUBLICACAO, COMENTARIO
+				\item Razão de cardinalidade:     N do lado de PUBLICACAO
+                1 do lado de COMENTARIO
+				\item Restrição de Parcialidade: Parcial do lado de PUBLICACAO                        Total do lado de COMENTARIO
+				\item Como se lê: Publicação possui Comentário; Comentário está em Publicação
+\end{itemize}
+\end{itemize}
 
-%Na declaração acima, procuramos por um elemento <a> que contém a classe ‘tec--author__info__link’, do elemento encontrado queremos a string dentro do elemento <a>.
+\begin{itemize}
+				\item ESCREVE
 
-%O BeautifulSoup permite filtrar as buscas por um determinado dado por meio de atributos, classes e id's que casam com a estrutura procurada, como feito nas declarações mostradas anteriormente. Porém nem sempre o dado que se quer extrair está contido em um elemento que possua algo que o diferencia dos restantes, nestes casos é adicionado uma complexidade a mais na coleta destes dados.
+Descreve a relação entre uma pessoa e os comentários feitos por esta pessoa, no qual uma pessoa pode fazer de nenhum à vários comentários, e por outro lado, um comentário é feito por uma única pessoa.
 
+Tem-se, então, as seguintes propriedades:
+\begin{itemize}
+
+\item Entidades envolvidas: PESSOA, COMENTARIO
+\item Razão de cardinalidade: N do lado de PESSOA; 1 do lado de COMENTARIO
+\item Restrição de Parcialidade: Parcial do lado de PESSOA                        Total do lado de COMENTARIO
+\item Como se lê: Pessoa escreve Comentario; Comentario é escrito por Pessoa
+\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+				\item RESPONDE
+
+Descreve a relação entre comentários, no qual um comentário pode ser respondido por nenhum, um ou vários outros comentários, e um comentário deve necessariamente ser escrito em resposta a nenhum (no caso do início de uma thread) ou a exclusivamente um comentário (no caso de continuação de uma thread).
+
+Tem-se, então, as seguintes propriedades:
+\begin{itemize}
+
+\item Entidades envolvidas: COMENTARIO, COMENTARIO (self-loop)
+\item Razão de cardinalidade:     N do lado de COMENTARIO                        ; 1 do lado de COMENTARIO
+\item Restrição de Parcialidade: Parcial do lado de COMENTARIO                        parcial do lado de COMENTARIO
+\item Como se lê: Comentário responde comentário; Comentário é respondido por Comentário
+\end{itemize}
+\end{itemize}
+
+\subsection{Especializações}
+
+Durante a elaboração do modelo EER foi proposto um relacionamento superclasse/subclasse para os tipos entidades.
+
+Este relacionamento superclasse/subclasse acontece entre o tipo entidade PESSOA (superclasse) e o tipo entidade AUTOR (subclasse). Este relacionamento veio da necessidade de especializar o tipo entidade PESSOA na subclasse AUTOR, dado que certos atributos e relacionamentos podem se aplicar a algumas, mas não a todas as entidades da superclasse PESSOA.
+
+ As propriedades gerais deste relacionamento estão descritas a seguir:
+ \begin{itemize}
+				 \item Superclasse: PESSOA
+				 \item Subclasse: AUTOR
+				 \item Processo adotado: Especialização
+				 \item Restrição de completude: Parcial
+ \end{itemize}
