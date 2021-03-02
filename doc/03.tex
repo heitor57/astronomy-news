@@ -33,8 +33,9 @@ Para cada domínio em questão, foram mapeados os dados que seriam possíveis de
 O mapeamento foi realizado de acordo com a seguinte metodologia: para cada domínio, foram acessados no mínimo cinco publicações aleatórias (link para as publicações) e em cada uma delas anotado quais componentes apareciam de maneira coletável em seu código HTML. Se um componente aparecer ao menos uma vez em alguma das páginas acessadas do domínio, será implementado no algoritmo de coleta de dados, para este domínio, uma rotina que irá extrair os dados deste componente sempre que o mesmo estiver contido no HTML da publicação. A Tabela 2 apresenta as informações obtidas a partir destas ponderações.  
 
 \begin{table}[H]
+				\tiny
 \noindent\makebox[\textwidth]{%
-\input{content_table_1.tex}}
+\input{content_table_2.tex}}
 \caption{Dados possíveis de serem coletados nas publicações de cada domínio.}
 \end{table}
 
@@ -47,6 +48,13 @@ Finalizando o estudo da Tabela 2, grande parte dos domínios dispõe, em algum p
 Para a coleta do conteúdo da matéria em si (o corpo da publicação), deve ser levado em consideração quais elementos podem figurar entre os parágrafos textuais da publicação. O caminho fácil seria coletar somente os textos, porém foi uma decisão de projeto manter o máximo possível da integridade e originalidade do conteúdo exposto na publicação, tornando-se necessário observar também o que pode estar contido no meio do conteúdo textual da matéria. 
 
 Sendo assim, a mesma metodologia descrita anteriormente foi utilizada para o processo de análise e reconhecimento dos conteúdos das publicações de cada domínio e como deve ser implementado o seu respectivo coletor. As informações obtidas destas observações são apresentadas na Tabela 3.  
+
+\begin{table}[H]
+
+\noindent\makebox[\textwidth]{%
+\input{content_table_1.tex}}
+\caption{Elementos que podem aparecer entre o conteúdo textual de uma publicação.}
+\end{table}
 
 
 %A linguagem de programação utilizada para a implementação dos coletores de dados será o Python, com o auxílio da biblioteca requests e requests-html para realizar as requisições GET das URLs indexadas pelo crawler e da biblioteca BeautifulSoup para acessar os ‘nós’ da estrutura do HTML da página ou até mesmo classes e extrair as informações nelas contidas.

@@ -3,7 +3,7 @@
 Para modelar conceitualmente o Banco de Dados foi utilizado o Modelo Entidade-Relacionamento Estendido (Modelo EER). A princípio foram definidos alguns elementos do tipo entidade e do tipo relacionamento que seriam essenciais para a estrutura do Banco de Dados, como por exemplo:
 
 \begin{itemize}
-				\item Tipo Entidade: Portal, Publicação, Pessoa, Autor, Comentário; 
+				\item Tipo entidade: Portal, Publicação, Pessoa, Autor, Comentário; 
 
 				\item  Tipo Relacionamento: Publicação ESTA\_EM Portal, Publicação ESCRITA\_POR Autor, Pessoa ESCREVE Comentário;
 \end{itemize}
@@ -17,11 +17,13 @@ Através da análise detalhada do minimundo, e refinamentos no modelo pré-estab
 \end{figure}
 \subsection{Tipos Entidades}
 
-Os Tipos Entidades presentes no modelo da Figura 1 estão descritos a seguir, junto aos seus atributos:
+Os tipos entidades presentes no modelo da Figura 1 estão descritos a seguir, junto aos seus atributos:
 
 \begin{itemize}
-				\item PORTAL: Tipo Entidade que representa um portal de notícias;
 
+				\item PORTAL: Tipo entidade que representa um portal de notícias;
+
+								O tipo entidade Portal é importante para identificação da origem da extração dos dados, a URL é utilizada como identificador assim como em outros tipo entidade devido as caracteristícas desse minimundo.
 \begin{itemize}
 \item URL: atributo chave que representa o endereço de rede do portal;
 \item Logo: atributo simples que representa a imagem do logotipo do portal;
@@ -29,7 +31,7 @@ Os Tipos Entidades presentes no modelo da Figura 1 estão descritos a seguir, ju
 \end{itemize}
 \end{itemize}
 \begin{itemize}
-\item PUBLICACAO: Tipo Entidade que representa uma publicação/notícia.
+\item PUBLICACAO: Tipo entidade que representa uma publicação/notícia.
 \begin{itemize}
 \item Palavras\_chave: atributo simples multivalorado que representa as palavras relacionadas a publicação;
 \item Título: atributo simples que representa o título da publicação;
@@ -45,7 +47,7 @@ Os Tipos Entidades presentes no modelo da Figura 1 estão descritos a seguir, ju
 \end{itemize}
 \begin{itemize}
 
-\item PESSOA: Tipo Entidade que representa uma pessoa no minimundo;
+\item PESSOA: Tipo entidade que representa uma pessoa no minimundo;
 \begin{itemize}
 \item URL: atributo chave que representa uma URL relacionada à pessoa;
 \item Nome: atributo simples que representa o nome da pessoa;
@@ -53,14 +55,14 @@ Os Tipos Entidades presentes no modelo da Figura 1 estão descritos a seguir, ju
 \end{itemize}
 \end{itemize}
 \begin{itemize}
-\item AUTOR: Tipo Entidade que representa o escritor da publicação. É uma especialização de pessoa;
+\item AUTOR: Tipo entidade que representa o escritor da publicação. É uma especialização de pessoa;
 				\begin{itemize}
 \item Palavras\_chave: atributo simples multivalorado que representa as palavras chaves das publicações que o autor escreve;
 \item Descricao: atributo simples que representa uma breve descrição sobre o autor.
 				\end{itemize}
 				\end{itemize}
 				\begin{itemize}
-\item COMENTARIO: Tipo Entidade que representa um comentário na publicação.
+\item COMENTARIO: Tipo entidade que representa um comentário na publicação.
 				\begin{itemize}
 \item ID: atributo chave que representa um identificador para o comentário;
 \item Texto: atributo simples que representa o texto do comentário por uma pessoa;
@@ -69,7 +71,7 @@ Os Tipos Entidades presentes no modelo da Figura 1 estão descritos a seguir, ju
 				\end{itemize}
 \subsection{Tipos Relacionamentos}
 
-Os tipos relacionamentos presentes no modelo da Figura 1 podem ser descritos em função dos Tipo Entidades envolvidos no relacionamento, da razão de cardinalidade e da restrição de parcialidade. A seguir será apresentado as informações de cada Tipo Relacionamento exposto no modelo EER.
+Os tipos relacionamentos presentes no modelo da Figura 1 podem ser descritos em função dos tipo entidades envolvidos no relacionamento, da razão de cardinalidade e da restrição de parcialidade. A seguir será apresentado as informações de cada Tipo Relacionamento exposto no modelo EER.
 
 \begin{itemize}
 				
