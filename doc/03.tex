@@ -4,7 +4,7 @@
 \subsection{Crawler}
 Procurou-se pela maior gama possível de portais de notícias brasileiros relevantes que possuíam uma sessão destinada a assuntos relacionados à astronomia para serem varridos e indexados pelo crawler.
 
-A Tabela 1 mostra os portais e suas respectivas seeds na qual o crawler irá realizar a varredura completa em busca dos links contidos a partir da seed.
+A Tabela 1 mostra os portais e suas respectivas seeds (ponto de partida do crawler) na qual o crawler irá realizar a varredura completa em busca dos links contidos a partir da seed.
 
 
 \begin{table}[H]
@@ -26,11 +26,18 @@ CanalTech & canaltech.com.br/espaco/\\\hline
 \caption{Seeds referentes aos conteúdos de astronomia para cada domínio.}
 \end{table}
 
+Na Figura 2 é possível observar o modelo geral do crawler que construimos para coleta de dados na web. Basicamente possuimos um módulo que extrai os links das páginas construindo, passo a passo, uma base de links que serão extraidos, se  a página for identificada como uma pagina de navegação, e o texto será extraido e estruturado para ser inserido na base de dados, se for identificado como uma publicação.
+
+\begin{figure}[H]
+				\centering
+\input{crawler_model.tex}
+\caption{Visão geral do Crawler.}
+\end{figure}
 
 \subsection{Scraping}
 Para cada domínio em questão, foram mapeados os dados que seriam possíveis de serem coletados pelo seu respectivo algoritmo coletor.
  
-O mapeamento foi realizado de acordo com a seguinte metodologia: para cada domínio, foram acessados no mínimo cinco publicações aleatórias (link para as publicações) e em cada uma delas anotado quais componentes apareciam de maneira coletável em seu código HTML. Se um componente aparecer ao menos uma vez em alguma das páginas acessadas do domínio, será implementado no algoritmo de coleta de dados, para este domínio, uma rotina que irá extrair os dados deste componente sempre que o mesmo estiver contido no HTML da publicação. A Tabela 2 apresenta as informações obtidas a partir destas ponderações.  
+O mapeamento foi realizado de acordo com a seguinte metodologia: para cada domínio, foram acessados no mínimo cinco publicações aleatórias (\href{https://docs.google.com/spreadsheets/d/16GBvNhlEYIQu8gTSKxBf8nR-BqBWB0fvnNiLtWflXy8/edit#gid=1793937951}{link para as publicações coletadas}) e em cada uma delas anotado quais componentes apareciam de maneira coletável em seu código HTML. Se um componente aparecer ao menos uma vez em alguma das páginas acessadas do domínio, será implementado no algoritmo de coleta de dados, para este domínio, uma rotina que irá extrair os dados deste componente sempre que o mesmo estiver contido no HTML da publicação. A Tabela 2 apresenta as informações obtidas a partir destas ponderações.  
 
 \begin{table}[H]
 				\tiny
