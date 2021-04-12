@@ -4,7 +4,7 @@
 \subsection{Crawler}
 Procurou-se pela maior gama possível de portais de notícias brasileiros relevantes que possuíam uma sessão destinada a assuntos relacionados à astronomia para serem varridos e indexados pelo crawler.
 
-A Tabela 1 mostra os portais e suas respectivas seeds na qual o crawler irá realizar a varredura completa em busca dos links contidos a partir da seed.
+A Tabela 1 mostra os portais e suas respectivas seeds (ponto de partida do crawler) na qual o crawler irá realizar a varredura completa em busca dos links contidos a partir da seed.
 
 
 \begin{table}[H]
@@ -26,19 +26,27 @@ CanalTech & canaltech.com.br/espaco/\\\hline
 \caption{Seeds referentes aos conteúdos de astronomia para cada domínio.}
 \end{table}
 
+Na Figura 2 é possível observar o modelo geral do crawler que construimos para coleta de dados na web. Basicamente possuimos um módulo que extrai os links das páginas construindo, passo a passo, uma base de links que serão extraidos, se  a página for identificada como uma pagina de navegação, e o texto será extraido e estruturado para ser inserido na base de dados, se for identificado como uma publicação.
+
+\begin{figure}[H]
+				\centering
+\input{crawler_model.tex}
+\caption{Visão geral do Crawler.}
+\end{figure}
 
 \subsection{Scraping}
 Para cada domínio em questão, foram mapeados os dados que seriam possíveis de serem coletados pelo seu respectivo algoritmo coletor.
  
-O mapeamento foi realizado de acordo com a seguinte metodologia: para cada domínio, foram acessados no mínimo cinco publicações aleatórias (link para as publicações) e em cada uma delas anotado quais componentes apareciam de maneira coletável em seu código HTML. Se um componente aparecer ao menos uma vez em alguma das páginas acessadas do domínio, será implementado no algoritmo de coleta de dados, para este domínio, uma rotina que irá extrair os dados deste componente sempre que o mesmo estiver contido no HTML da publicação. A Tabela 2 apresenta as informações obtidas a partir destas ponderações.  
+O mapeamento foi realizado de acordo com a seguinte metodologia: para cada domínio, foram acessados no mínimo cinco publicações aleatórias (\href{https://docs.google.com/spreadsheets/d/16GBvNhlEYIQu8gTSKxBf8nR-BqBWB0fvnNiLtWflXy8/edit#gid=1793937951}{link para as publicações coletadas}) e em cada uma delas anotado quais componentes apareciam de maneira coletável em seu código HTML. Se um componente aparecer ao menos uma vez em alguma das páginas acessadas do domínio, será implementado no algoritmo de coleta de dados, para este domínio, uma rotina que irá extrair os dados deste componente sempre que o mesmo estiver contido no HTML da publicação. A Tabela 2 apresenta as informações obtidas a partir destas ponderações.  
 
 \begin{table}[H]
+				\tiny
 \noindent\makebox[\textwidth]{%
-\input{content_table_1.tex}}
+\input{content_table_2.tex}}
 \caption{Dados possíveis de serem coletados nas publicações de cada domínio.}
 \end{table}
 
-De acordo com a Tabela 2, pode-se observar que seis dados são possíveis de extrair da página para todos os domínios, são eles: título, descrição (texto chamada da matéria), imagem principal (imagem de chamada da matéria), data (última modificação na publicação), conteúdo (o corpo da matéria em si) e o autor/escritor da publicação. Este último contém peculiaridades, visto que algumas publicações não especificam unitariamente quem é o autor, como em casos nos quais a autoria da publicação é destinada à “Redação”. Pretende-se utilizar os dados dos autores em uma funcionalidade extra na aplicação final, porém nesta funcionalidade informações de autoria como “Redação” não terão serventia, sendo necessário uma filtragem nos dados deste tipo.
+De acordo com a Tabela 2, pode-se observar que seis dados são possíveis de extrair da página para todos os domínios, são eles: título, descrição (texto chamada da matéria), imagem principal (imagem de chamada da matéria), data (última modificação na publicação), conteúdo (o corpo da matéria em si) e o autor/escritor da publicação. Este último contém peculiaridades, visto que algumas publicações não especificam unitariamente quem é o autor, como em casos nos quais a autoria da publicação é destinada à 'Redação'. Pretende-se utilizar os dados dos autores em uma funcionalidade extra na aplicação final, porém nesta funcionalidade informações de autoria como 'Redação' não terão serventia, sendo necessário uma filtragem nos dados deste tipo.
 
 Ainda sobre a Tabela 2, poucos domínios informam o tempo de leitura em suas publicações, apenas dois. Mesmo assim, foi optado por armazenar este dado no banco de dados, pois estuda-se desenvolver um algoritmo que estime o tempo de leitura para os domínios que não provêm esta informação. A respeito dos comentários, alguns domínios oferecem esta funcionalidade aos leitores. Para os domínios que oferecem, existem àqueles que usam o plugin Disqus, àqueles que usam o plugin do Facebook e àqueles que implementaram o seu próprio sistema de comentários, sendo necessário diferentes métodos para coletar estas informações. Nos sites que usam o sistema do Disqus existe ainda a funcionalidade “Reação” que permite o usuário reagir à publicação com um emoji.
 
@@ -46,7 +54,14 @@ Finalizando o estudo da Tabela 2, grande parte dos domínios dispõe, em algum p
 
 Para a coleta do conteúdo da matéria em si (o corpo da publicação), deve ser levado em consideração quais elementos podem figurar entre os parágrafos textuais da publicação. O caminho fácil seria coletar somente os textos, porém foi uma decisão de projeto manter o máximo possível da integridade e originalidade do conteúdo exposto na publicação, tornando-se necessário observar também o que pode estar contido no meio do conteúdo textual da matéria. 
 
-Sendo assim, a mesma metodologia descrita anteriormente foi utilizada para o processo de análise e reconhecimento dos conteúdos das publicações de cada domínio e como deve ser implementado o seu respectivo coletor. As informações obtidas destas observações são apresentadas na Tabela 3.  
+Sendo assim, a mesma metodologia descrita anteriormente foi utilizada para o processo de análise e reconhecimento dos conteúdos das publicações de cada domínio e como deve ser implementado o seu respectivo coletor. As informações obtidas destas observações são apresentadas na Tabela 3.
+
+\begin{table}[H]
+
+\noindent\makebox[\textwidth]{%
+\input{content_table_1.tex}}
+\caption{Elementos que podem aparecer entre o conteúdo textual de uma publicação.}
+\end{table}
 
 
 %A linguagem de programação utilizada para a implementação dos coletores de dados será o Python, com o auxílio da biblioteca requests e requests-html para realizar as requisições GET das URLs indexadas pelo crawler e da biblioteca BeautifulSoup para acessar os ‘nós’ da estrutura do HTML da página ou até mesmo classes e extrair as informações nelas contidas.
