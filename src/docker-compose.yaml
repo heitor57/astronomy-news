@@ -51,11 +51,30 @@ services:
     container_name: kib01
     ports:
       - 5601:5601
+      #- 3002:3002
     environment:
       ELASTICSEARCH_URL: http://es01:9200
       ELASTICSEARCH_HOSTS: '["http://es01:9200"]'
+    volumes:
+      - ./kibana.yml:/usr/share/kibana/config/kibana.yml
     networks:
       - elastic
+  #enterprisesearch:
+    #container_name: enterprisesearch
+    #image: docker.elastic.co/enterprise-search/enterprise-search:7.12.0
+    #environment:
+    ##- "ent_search.auth.source=standard"
+    ##- "elasticsearch.username=elastic"
+    ##- "elasticsearch.password=$ELASTIC_PASSWORD"
+      #- "JAVA_OPTS=-Xms512m -Xmx512m"
+      #- "elasticsearch.host=http://es01:9200"
+      #- "allow_es_settings_modification=true"
+      #- "secret_management.encryption_keys=[50ec76608af52cfecca66d5291d9c02b8657a4f6a06a766a952063f78c606fd4]"
+      #- "secret_session_key=c2c9254eaf8e1ae1c9c445846998716b93e8350ca4d7070352c185a7b357b9d75763bc640cc456f7e7616fd053d0183ccdbebb5c52df9f74b9416ab4a3233c32"
+    #ports: ['3002:3002']
+    #networks: ['elastic']
+    #links: ['es01']
+    #depends_on: ['es01']
   monstache:
     image: rwynn/monstache:latest
     container_name: monstache
