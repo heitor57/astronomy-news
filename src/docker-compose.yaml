@@ -1,0 +1,78 @@
+version : '2.2'
+
+services:
+  mongosetup:
+    image: mongo:latest
+    depends_on:
+      - mdb
+    restart: "no"
+    entrypoint: [ "bash", "-c", "sleep 1 && mongo --host mdb:27017 --eval 'rs.initiate()'"]      
+    networks:
+      - elastic
+  mdb:
+    image: mongo:latest
+    container_name: mdb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb:/data/db
+      - mongodb_config:/data/configdb
+    #entrypoint: [ "mongod", "--replSet", "rs0"]
+    command: [ "--replSet", "rs0","--bind_ip_all"]
+    #entrypoint: [ "mongod", "--bind_ip_all", "--replSet", "rs0" ]
+    #entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
+    #entrypoint: [ "/usr/bin/mongod", "--bind_ip","0.0.0.0", "--replSet", "rs0" ]
+    networks:
+      - elastic
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.12.0
+    container_name: es01
+    environment:
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+      #- discovery.seed_hosts=es02,es03
+      #- cluster.initial_master_nodes=es01,es02,es03
+      #- cluster.initial_master_nodes=es01,es02,es03
+      - "discovery.type=single-node"
+      #- bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data01:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - elastic
+  kib01:
+    image: docker.elastic.co/kibana/kibana:7.12.0
+    container_name: kib01
+    ports:
+      - 5601:5601
+    environment:
+      ELASTICSEARCH_URL: http://es01:9200
+      ELASTICSEARCH_HOSTS: '["http://es01:9200"]'
+    networks:
+      - elastic
+  monstache:
+    image: rwynn/monstache:latest
+    container_name: monstache
+    working_dir: /app
+    command: -f ./monstache.config.toml
+    volumes:
+      - ./monstache.config.toml:/app/monstache.config.toml
+      #- ./plugin/plugin.so:/app/plugin.so
+    ports:
+      - "8080:8080"
+    networks:
+      - elastic
+volumes:
+  mongodb:
+  mongodb_config:
+  data01:
+    driver: local
+networks:
+  elastic:
+    driver: bridge
