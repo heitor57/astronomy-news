@@ -1,0 +1,15 @@
+#mongo-url = "mongodb://root-user:password@mongo:27017"
+#mongo-url = "mongodb://db:27017"
+mongo-url = "mongodb://mdb:27017/?connect=direct"
+
+elasticsearch-urls = ["http://es01:9200"]
+elasticsearch-max-seconds = 5
+elasticsearch-max-conns = 6
+
+
+direct-read-namespaces = ["news.publications"]
+change-stream-namespaces = ["news"]
+
+verbose = false
+
+enable-http-server = true
