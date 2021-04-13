@@ -15,8 +15,10 @@ domain = open('astronomy_domain.txt').read().split('\n')
 
 news = utils.start_db()
 
-publications = news.publications.find({'keywords':{"$exists":False}}).sort("url",pymongo.DESCENDING)
+# publications = news.publications.find({'resumes':{"$exists":False}}).sort("url",pymongo.DESCENDING)
+publications = news.publications.find({'resumes':{"$exists":False}}).sort("url",pymongo.ASCENDING)
 # publications = news.publications.find({'keywords':{"$exists":False}}).sort("url",pymongo.DESCENDING)
+# publications = news.publications.find({'keywords':{"$exists":False}}).sort("url",pymongo.ASCENDING)
 wpm_read_human_mean = 225
 model = KeyBERT('distilbert-base-nli-mean-tokens')
 auto_abstractor = AutoAbstractor()
