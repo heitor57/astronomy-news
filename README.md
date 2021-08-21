@@ -1,4 +1,4 @@
-# Astronomy News Crawler with Analyses
+# Astronomy News Crawler with Analytical Dashboard
 
 This repository contains a news crawler project, data mining approaches are used to make analyses in combination with an amazing data visualization.
 
