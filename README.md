@@ -15,3 +15,11 @@ Below are some of the results obtained from our crawling process.
 ![Word cloud](https://github.com/heitor57/astronomy-news/blob/docs/imgs/wordcloud.png?raw=true)
 
 ![Graph](https://github.com/heitor57/astronomy-news/blob/docs/imgs/graph.png?raw=true)
+
+![Interface 1](https://github.com/heitor57/astronomy-news/blob/docs/imgs/interface1.png?raw=true)
+
+![Interface 2](https://github.com/heitor57/astronomy-news/blob/docs/imgs/interface2.png?raw=true)
+
+![List 1](https://github.com/heitor57/astronomy-news/blob/docs/imgs/list1.png?raw=true)
+
+![List 2](https://github.com/heitor57/astronomy-news/blob/docs/imgs/list2.png?raw=true)
